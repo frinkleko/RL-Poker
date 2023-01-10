@@ -2,11 +2,12 @@ import poker_gui as gui
 
 from game import *
 
-while True:
-    try:
-        datas = gui.startGame()
-        game = Game(*datas)
-        game.run()
-        break
-    except startOver:
-        pass
+if __name__ == '__main__':
+    while True:
+        try:
+            datas = gui.startGame()
+            game = Game(*datas)
+            game.run()
+            break
+        except startOver:
+            pass
