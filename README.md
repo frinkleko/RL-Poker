@@ -1,6 +1,7 @@
 # A project for 1v1 texas poker with stupid AI
 
 ## file structure
+```
 │  .gitignore
 │  classes.py
 │  dealerCheck.py
@@ -18,6 +19,7 @@
 │      flip.mp3
 │      lose.mp3
 │      win.mp3
+```
 
 ## classes
 contain classes of Player,Table,Card,Deck
