@@ -5,7 +5,7 @@ import stupid
 from exceptions import *
 
 class Game():
-    def __init__(self,playerName, computerName, startingMoney, minBet) -> None:
+    def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
         self.playerName = playerName
         self.computerName = computerName
         self.startingMoney = startingMoney

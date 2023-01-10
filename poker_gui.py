@@ -64,6 +64,7 @@ buttons = {
     "Check": [*roundButtonImg("Check", *colors)],
     "Fold": [*roundButtonImg("Fold", *colors)],
     "New Game": [*roundButtonImg("New Game", *colors)],
+    "Read Record" : [*roundButtonImg("Read Record", *colors)],
     "Continue": [*roundButtonImg("Continue", *colors, False)],
 }
 
@@ -117,12 +118,14 @@ def startGame():
                 [sg.Text("Computer Name")],
                 [sg.Text("Starting Money")],
                 [sg.Text("Minimal Bet")],
+                [sg.Text("Game Mode")],
             ]),
             sg.Column([
                 [sg.Input("Nobody", key="PLAYERNAME")],
                 [sg.Input("Skynet", key="COMPUTERNAME")],
                 [sg.Input(str(10000), key="STARTINGMONEY")],
                 [sg.Input(str(500), key="MINBET")],
+                [sg.Input("Play",key="GAMEMODE")],
             ]),
         ],
         [sg.Push(), buttons2["START"][0],
@@ -148,18 +151,19 @@ def startGame():
             continue
 
         if event == "START":
-            playerName, computerName, startingMoney, minBet = (
+            playerName, computerName, startingMoney, minBet, mode = (
                 values["PLAYERNAME"].strip("\n").strip(" "),
                 values["COMPUTERNAME"].strip("\n").strip(" "),
                 values["STARTINGMONEY"].strip("\n").strip(" "),
                 values["MINBET"].strip("\n").strip(" "),
+                values["GAMEMODE"].strip("\n").strip(" "),
             )
 
             if startingMoney.isdigit() and minBet.isdigit():
                 startingMoney, minBet = int(startingMoney), int(minBet)
                 if startingMoney > minBet:
                     window.close()
-                    return playerName, computerName, startingMoney, minBet
+                    return playerName, computerName, startingMoney, minBet, mode
 
     window.close()
     return 1
@@ -269,6 +273,7 @@ def gameWindow(minBet, player, computer):
         [sg.Push(), sg.pin(buttons["Continue"][0]),
          sg.Push()],
         [sg.Push(), sg.pin(buttons["New Game"][0])],
+        [sg.Push(), sg.pin(buttons["Read Record"][0])],
     ]
 
     window = sg.Window("Poker", layout, use_default_focus=False, finalize=True)
@@ -299,12 +304,15 @@ def readInput(window, keepLock=False):
         elif event == "Bet":
             playBet()
             value = int(values["BET"])
-        elif event == "Fold" or event == "Continue" or event == "New Game":
+        elif event == "Fold" or event == "Continue" or event == "New Game" or event == "Read Record":
             if event == "Continue":
                 window["Continue"].Update(visible=False)
                 unlockButtons(window)
             value = None
             if event == "New Game":
+                window.close()
+                del window
+            if event == "Read Record":
                 window.close()
                 del window
             return event, None
