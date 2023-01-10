@@ -4,52 +4,65 @@ import dealerCheck
 import stupid
 from exceptions import *
 
-def game(playerName, computerName, startingMoney, minBet):
+class Game():
+    def __init__(self,playerName, computerName, startingMoney, minBet) -> None:
+        self.playerName = playerName
+        self.computerName = computerName
+        self.startingMoney = startingMoney
+        self.minBet = minBet
 
-    def newGame():
-        # init players and table
-        player = classes.Player(playerName, startingMoney, None, 0, None)
-        computer = classes.Player(computerName, startingMoney, None, 0, None)
-        table = classes.Table(minBet, startingMoney)
-        return player, computer, table
+        # init players and self.table
+        self.player = classes.Player(self.playerName, self.startingMoney, None, 0, None)
+        self.computer = classes.Player(self.computerName, self.startingMoney, None, 0, None)
+        self.table = classes.Table(self.minBet, self.startingMoney)
 
-    def giveCards():
+        self.window = gui.gameWindow(self.minBet, self.player, self.computer)
+
+        self.winnerIndex = None
+
+        self.turn = [lambda: self.comTurn(), lambda: self.playerTurn()]
+        self.smallBlind = [
+            lambda y, : y.betting(self.minBet), lambda y: y.betting(self.minBet * 2)
+        ]
+        self.smallFirst = [self.player, self.computer]
+
+    def giveCards(self):
         # init deck for this game
 
         deck = classes.Deck()
 
         # 4 cards are drawn from deck by twice
-        player.giveCards(deck)
-        computer.giveCards(deck)
+        self.player.giveCards(deck)
+        self.computer.giveCards(deck)
         return deck
 
-    def playerTurn():
-        table.checkMinMaxBet(player, [computer])
-        updateSliderAndText()
+    def playerTurn(self):
+        self.table.checkMinMaxBet(self.player, [self.computer])
+        self.updateSliderAndText()
 
         # lock or unlock check button
-        if ((player.bet == None and computer.bet == None)
-                or (computer.bet == 0 and player.bet == None)):
-            gui.unlockCheck(window)
+        if ((self.player.bet == None and self.computer.bet == None)
+                or (self.computer.bet == 0 and self.player.bet == None)):
+            gui.unlockCheck(self.window)
         else:
-            gui.lockCheck(window)
+            gui.lockCheck(self.window)
 
         # if begin a new game
-        event, value = gui.readInput(window)
+        event, value = gui.readInput(self.window)
         if event == 'New Game':
             raise startOver
-        gui.lockButtons(window)
-        gui.lockCheck(window)
+        gui.lockButtons(self.window)
+        gui.lockCheck(self.window)
 
-        # if player fold
+        # if self.player fold
         if event == 'Fold':
             raise playerFold
 
         # get init betting value and print
-        player.betting(value)
-        updateText()
+        self.player.betting(value)
+        self.updateText()
 
-        gui.updateOut(window, actionDone(player, computer))
+        gui.updateOut(self.window, self.actionDone(self.player, self.computer))
 
         # check action taken
         if event == 'Bet':
@@ -57,59 +70,59 @@ def game(playerName, computerName, startingMoney, minBet):
         elif event == 'Check':
             gui.playCheck()
         
-        # if one player allin, table is allin
-        table.isALLIN([player, computer])
+        # if one self.player allin, self.table is allin
+        self.table.isALLIN([self.player, self.computer])
         gui.pause()
 
-    def comTurn():
+    def comTurn(self):
 
-        table.checkMinMaxBet(computer, [player])
+        self.table.checkMinMaxBet(self.computer, [self.player])
 
         # stupid action 
-        action, bet = stupid.main(computer, table, player)
+        action, bet = stupid.main(self.computer, self.table, self.player)
         if action in ['Bet', 'Check']:
-            computer.betting(bet)
+            self.computer.betting(bet)
         elif action == 'Fold':
             raise comFold
 
-        updateText()
-        if computer.bet == 0:
+        self.updateText()
+        if self.computer.bet == 0:
             gui.playCheck()
         else:
             gui.playBet()
 
-        gui.updateOut(window, actionDone(computer, player))
+        gui.updateOut(self.window, self.actionDone(self.computer, self.player))
         gui.pause()
 
-    def bettingTime():
+    def bettingTime(self):
         # loop util betting end 
         while True:
-            for i in range(len(turn)):
-                turn[i]()
-                if (player.bet == computer.bet and player.bet != None
-                        and computer.bet != None):
+            for i in range(len(self.turn)):
+                self.turn[i]()
+                if (self.player.bet == self.computer.bet and self.player.bet != None
+                        and self.computer.bet != None):
                     raise endTurn
 
-    def foldFunction():
+    def foldFunction(self):
         # cal the reward and reward
-        table.addToPot([player, computer])
-        rewardWinner()
-        updateText()
+        self.table.addToPot([self.player, self.computer])
+        self.rewardWinner()
+        self.updateText()
 
-    def declareWinner():
-        return dealerCheck.checkWinner([player, computer], table)
+    def declareWinner(self):
+        return dealerCheck.checkWinner([self.player, self.computer], self.table)
 
-    def rewardWinner():
-        table.payPlayer([player, computer][winnerIndex])
+    def rewardWinner(self):
+        self.table.payPlayer([self.player, self.computer][self.winnerIndex])
 
-    def updateSliderAndText():
-        gui.updateBet(window, player)
-        gui.updateText(window, player, computer, table)
+    def updateSliderAndText(self):
+        gui.updateBet(self.window, self.player)
+        gui.updateText(self.window, self.player, self.computer, self.table)
 
-    def updateText():
-        gui.updateText(window, player, computer, table)
+    def updateText(self):
+        gui.updateText(self.window, self.player, self.computer, self.table)
 
-    def actionDone(p1, p2):
+    def actionDone(self, p1, p2):
         if p1.money == 0 and p2.money != 0:
             return p1.name + " goes ALLIN with $" + str(p1.bet) + "!!!!"
         elif p1.money == 0 and p2.money == 0:
@@ -123,108 +136,98 @@ def game(playerName, computerName, startingMoney, minBet):
         elif p1.bet == p2.bet:
             return p1.name + " calls " + p2.name + " with $" + str(p1.bet)
 
-    def clear():
-        table.clear()
-        player.clear()
-        computer.clear()
-        gui.clear(window)
+    def clear(self):
+        self.table.clear()
+        self.player.clear()
+        self.computer.clear()
+        gui.clear(self.window)
 
 #############################################################################
-
-    player, computer, table = newGame()
-    winnerIndex = None
-
-    turn = [lambda: comTurn(), lambda: playerTurn()]
-    smallBlind = [
-        lambda y, : y.betting(minBet), lambda y: y.betting(minBet * 2)
-    ]
-    smallFirst = [player, computer]
-    window = gui.gameWindow(minBet, player, computer)
-
-    while player.money != 0 and computer.money != 0:
-        try:
-            # Reset all the table
-            clear()
-
-            # Shuffle deck and give cards
-            deck = giveCards()
-            gui.giveCards(window, player)
-
-            # Update GUI points
-            player.points = dealerCheck.checkPoints(player, table)
-            gui.updatePoints(window, player.points)
-
-            smallBlind[0](smallFirst[0])
-            updateText()
-            gui.playBet()
-            gui.pause()
-            smallBlind[1](smallFirst[1])
-            updateText()
-            gui.playBet()
-            gui.pause()
-
-            turn.reverse()
-            #smallBlind.reverse()
-            smallFirst.reverse()
-
-            # check if allin in table
-            table.isALLIN([player, computer])
-            updateText()
-
-            phase = ["Flop", "Turn", "River"]
-            for i in range(3):
-                if table.allin == False:
-                    try:
-                        bettingTime()
-                    except endTurn:
-                        updateText()
-                        table.addToPot([player, computer])
-                        updateText()
-                        gui.updateOut(window, phase[i] + "!")
-
-                table.flop(deck)
-                gui.updateFlop(window, table)
-                player.points = dealerCheck.checkPoints(player, table)
-                gui.updatePoints(window, player.points)
-                updateText()
-
+    def run(self):
+        while self.player.money != 0 and self.computer.money != 0:
             try:
-                if table.allin == False:
-                    bettingTime()
-            except endTurn:
-                updateText()
+                # Reset all the self.table
+                self.clear()
 
-            table.addToPot([player, computer])
+                # Shuffle deck and give cards
+                deck = self.giveCards()
+                gui.giveCards(self.window, self.player)
 
-            # Flip COM cards
-            gui.flipCOM(window, computer)
+                # Update GUI points
+                self.player.points = dealerCheck.checkPoints(self.player, self.table)
+                gui.updatePoints(self.window, self.player.points)
 
-            # Checking winner
-            winnerIndex = declareWinner()
+                self.smallBlind[0](self.smallFirst[0])
+                self.updateText()
+                gui.playBet()
+                gui.pause()
+                self.smallBlind[1](self.smallFirst[1])
+                self.updateText()
+                gui.playBet()
+                gui.pause()
 
-            # Winning or losing interactive response
-            player.points = dealerCheck.checkPoints(player, table)
-            computer.points = dealerCheck.checkPoints(computer, table)
-            gui.updateOut(window, [player, computer][winnerIndex].name +
-                          " wins $" + str(table.pot) + " with " +
-                          [player, computer][winnerIndex].points + "!!")
-            gui.playHand(winnerIndex)
-            rewardWinner()
-            updateText()
+                self.turn.reverse()
+                #self.smallBlind.reverse()
+                self.smallFirst.reverse()
 
-            # Waiting for continue or new game, analyze the table
-            if gui.readInput(window, True)[0] == 'New Game':
-                raise startOver
+                # check if allin in self.table
+                self.table.isALLIN([self.player, self.computer])
+                self.updateText()
 
-        except playerFold:
-            winnerIndex = 1
-            foldFunction()
-            gui.playHand(winnerIndex)
+                phase = ["Flop", "Turn", "River"]
+                for i in range(3):
+                    if self.table.allin == False:
+                        try:
+                            self.bettingTime()
+                        except endTurn:
+                            self.updateText()
+                            self.table.addToPot([self.player, self.computer])
+                            self.updateText()
+                            gui.updateOut(self.window, phase[i] + "!")
 
-        except comFold:
-            winnerIndex = 0
-            foldFunction()
-            gui.playHand(winnerIndex)
+                    self.table.flop(deck)
+                    gui.updateFlop(self.window, self.table)
+                    self.player.points = dealerCheck.checkPoints(self.player, self.table)
+                    gui.updatePoints(self.window, self.player.points)
+                    self.updateText()
 
-    window.close()
-    return None
+                try:
+                    if self.table.allin == False:
+                        self.bettingTime()
+                except endTurn:
+                    self.updateText()
+
+                self.table.addToPot([self.player, self.computer])
+
+                # Flip COM cards
+                gui.flipCOM(self.window, self.computer)
+
+                # Checking winner
+                self.winnerIndex = self.declareWinner()
+
+                # Winning or losing interactive response
+                self.player.points = dealerCheck.checkPoints(self.player, self.table)
+                self.computer.points = dealerCheck.checkPoints(self.computer, self.table)
+                gui.updateOut(self.window, [self.player, self.computer][self.winnerIndex].name +
+                            " wins $" + str(self.table.pot) + " with " +
+                            [self.player, self.computer][self.winnerIndex].points + "!!")
+                gui.playHand(self.winnerIndex)
+                self.rewardWinner()
+                self.updateText()
+
+                # Waiting for continue or new game, analyze the self.table
+                if gui.readInput(self.window, True)[0] == 'New Game':
+                    raise startOver
+
+            except playerFold:
+                self.winnerIndex = 1
+                self.foldFunction()
+                gui.playHand(self.winnerIndex)
+
+            except comFold:
+                self.winnerIndex = 0
+                self.foldFunction()
+                gui.playHand(self.winnerIndex)
+
+        self.window.close()
+        return None
