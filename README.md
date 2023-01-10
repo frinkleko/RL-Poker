@@ -52,3 +52,36 @@ contains logic function for one game, and repeat it in a while Loop
     + create checker class to sort `dealerCheck` function
     + create card class inherit card and a draw class so that a card object contain card infos and draw function
     + create img class inherit from file class. create record class inherit from file class.
+
+## hints for OOP in python
++ write private/protected function by add "__" before function name, like "__add", teh same for variable ("__name")
+
++ For python is a dynamic weak type language, polymorphism for derived class use same name function is just define the same name function 
+
++ if you want to use base class function, use `super` in init function
+
++ to define a abstract class and function use 
+
+  ```python
+  class File(metaclass=abc.ABCMeta):  # 同一类事物:文件
+      @abc.abstractmethod
+      def click(self):
+          pass
+  ```
+
++ define a interface to use polymorphism like 
+
+  ```python
+  peo=People()
+  dog=Dog()
+  pig=Pig()
+  
+  peo.talk()
+  dog.talk()
+  pig.talk()
+  
+  def func(obj):
+      obj.talk()
+  ```
+
+  
