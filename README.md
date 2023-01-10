@@ -42,3 +42,13 @@ contain a math-based stupid AI
 ## playGame
 contains logic function for one game, and repeat it in a while Loop
 
+## OOP todo List
+- [ ] add game record and review function from record file
+    + store players card per turn
+    + read record file and play the game in visible card mode auto
+- [ ] add inherit and multi poly.. in this project
+    + create player and computer class inherit participant class 
+    + computer class have more details math ai content
+    + create checker class to sort `dealerCheck` function
+    + create card class inherit card and a draw class so that a card object contain card infos and draw function
+    + create img class inherit from file class. create record class inherit from file class.
