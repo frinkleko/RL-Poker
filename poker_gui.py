@@ -373,6 +373,8 @@ def updateBet(window, player):
     window["BET"].Update(range=(player.minBet, player.maxBet))
     window.refresh()
 
+import logging
+logging.basicConfig(filename='log.txt', level=logging.INFO)
 
 def updateText(window, player, computer, table):
 
@@ -390,6 +392,7 @@ def updateText(window, player, computer, table):
             else:
                 datas[i] = datas[i].replace("$0", "ALLIN")
 
+    logging.info(datas)
     elements = ["PLAYERBET", "PLAYERMONEY", "COMBET", "COMMONEY", "TABLEPOT"]
 
     [

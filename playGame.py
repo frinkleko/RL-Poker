@@ -7,7 +7,6 @@ from game import *
 
 while True:
     try:
-
         datas = gui.startGame()
         game(*datas)
         break

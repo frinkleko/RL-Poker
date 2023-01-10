@@ -5,21 +5,20 @@ import stupid
 from exceptions import *
 
 def game(playerName, computerName, startingMoney, minBet):
+
     def newGame():
+        # init players and table
         player = classes.Player(playerName, startingMoney, None, 0, None)
         computer = classes.Player(computerName, startingMoney, None, 0, None)
         table = classes.Table(minBet, startingMoney)
         return player, computer, table
 
     def giveCards():
-        # Deck is created
+        # init deck for this game
+
         deck = classes.Deck()
 
-        # HERE WE SHOULD DECLARE TURN AND BASED ON THAT
-        # PUT IF BIG BLIND OR SMALL BLIND
-
-        # + Cards to player and Com
-        # - Cards to deck
+        # 4 cards are drawn from deck by twice
         player.giveCards(deck)
         computer.giveCards(deck)
         return deck
@@ -28,29 +27,37 @@ def game(playerName, computerName, startingMoney, minBet):
         table.checkMinMaxBet(player, [computer])
         updateSliderAndText()
 
+        # lock or unlock check button
         if ((player.bet == None and computer.bet == None)
                 or (computer.bet == 0 and player.bet == None)):
             gui.unlockCheck(window)
         else:
             gui.lockCheck(window)
 
+        # if begin a new game
         event, value = gui.readInput(window)
         if event == 'New Game':
             raise startOver
         gui.lockButtons(window)
         gui.lockCheck(window)
 
+        # if player fold
         if event == 'Fold':
             raise playerFold
 
+        # get init betting value and print
         player.betting(value)
         updateText()
+
         gui.updateOut(window, actionDone(player, computer))
 
+        # check action taken
         if event == 'Bet':
             gui.playBet()
         elif event == 'Check':
             gui.playCheck()
+        
+        # if one player allin, table is allin
         table.isALLIN([player, computer])
         gui.pause()
 
@@ -58,6 +65,7 @@ def game(playerName, computerName, startingMoney, minBet):
 
         table.checkMinMaxBet(computer, [player])
 
+        # stupid action 
         action, bet = stupid.main(computer, table, player)
         if action in ['Bet', 'Check']:
             computer.betting(bet)
@@ -69,13 +77,12 @@ def game(playerName, computerName, startingMoney, minBet):
             gui.playCheck()
         else:
             gui.playBet()
-        # End test
 
         gui.updateOut(window, actionDone(computer, player))
         gui.pause()
-        pass
 
     def bettingTime():
+        # loop util betting end 
         while True:
             for i in range(len(turn)):
                 turn[i]()
@@ -84,6 +91,7 @@ def game(playerName, computerName, startingMoney, minBet):
                     raise endTurn
 
     def foldFunction():
+        # cal the reward and reward
         table.addToPot([player, computer])
         rewardWinner()
         updateText()
@@ -121,6 +129,8 @@ def game(playerName, computerName, startingMoney, minBet):
         computer.clear()
         gui.clear(window)
 
+#############################################################################
+
     player, computer, table = newGame()
     winnerIndex = None
 
@@ -157,6 +167,7 @@ def game(playerName, computerName, startingMoney, minBet):
             #smallBlind.reverse()
             smallFirst.reverse()
 
+            # check if allin in table
             table.isALLIN([player, computer])
             updateText()
 
