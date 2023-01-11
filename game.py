@@ -3,7 +3,8 @@ import poker_gui as gui
 import dealerCheck
 from exceptions import *
 from participant import Player,Computer
-import time
+import datetime
+import logging
 
 class Game():
     def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
@@ -34,11 +35,16 @@ class Game():
         deck = classes.Deck()
 
         # 4 cards are drawn from deck by twice
-        self.player.giveCards(deck)
-        self.computer.giveCards(deck)
+        player_cards = self.player.giveCards(deck)
+        computer_cards = self.computer.giveCards(deck)
+
+        logging.info("Player cards: " + str(player_cards))
+        logging.info("Computer cards: " + str(computer_cards))
+
         return deck
 
     def playerTurn(self):
+        logging.info("Player turn")
         self.table.checkMinMaxBet(self.player, [self.computer])
         self.updateSliderAndText()
 
@@ -51,6 +57,8 @@ class Game():
 
         # if begin a new game
         event, value = gui.readInput(self.window)
+        logging.info("Player action: " + str(event) + " " + str(value))
+
         if event == 'New Game':
             raise startOver
         gui.lockButtons(self.window)
@@ -77,11 +85,14 @@ class Game():
         gui.pause()
 
     def comTurn(self):
+        logging.info("Computer turn")
 
         self.table.checkMinMaxBet(self.computer, [self.player])
 
         # stupid action 
         action, bet = self.computer.main(self.table, self.player)
+        logging.info("Computer action: " + str(action) + " " + str(bet))
+
         if action in ['Bet', 'Check']:
             self.computer.betting(bet)
         elif action == 'Fold':
@@ -100,6 +111,7 @@ class Game():
         # loop util betting end 
         while True:
             for i in range(len(self.turn)):
+                logging.info("Turn: " + str(i))
                 self.turn[i]()
                 if (self.player.bet == self.computer.bet and self.player.bet != None
                         and self.computer.bet != None):
@@ -146,23 +158,27 @@ class Game():
 
 #############################################################################
     def run(self):
-        import logging
+        logging.basicConfig(handlers=[logging.FileHandler(filename='log/{}_{}.txt'.format(self.player.name,self.computer.name),
+                                                            encoding='utf-8', mode='a+')],
+                                format="%(asctime)s %(name)s:%(levelname)s:%(message)s", 
+                                datefmt="%F %A %T", 
+                                level=logging.INFO)
         while self.player.money != 0 and self.computer.money != 0:
-            logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s',
-                filename='{}_{}_{}.txt'.format(self.player.name,self.computer.name,time.localtime()[0]), filemode='w')
             logging.info('New Game')
             try:
                 # Reset all the self.table
                 self.clear()
-
+                logging.info('Clear')
 
                 # Shuffle deck and give cards
+                logging.info('Give cards')
                 deck = self.giveCards()
                 gui.giveCards(self.window, self.player)
 
                 # Update GUI points
                 self.player.points = dealerCheck.checkPoints(self.player, self.table)
                 gui.updatePoints(self.window, self.player.points)
+
 
                 self.smallBlind[0](self.smallFirst[0])
                 self.updateText()
@@ -173,12 +189,14 @@ class Game():
                 gui.playBet()
                 gui.pause()
 
+
                 self.turn.reverse()
                 #self.smallBlind.reverse()
                 self.smallFirst.reverse()
 
                 # check if allin in self.table
                 self.table.isALLIN([self.player, self.computer])
+                logging.info('Table allin:{}'.format(self.table.allin))
                 self.updateText()
 
                 phase = ["Flop", "Turn", "River"]
@@ -215,9 +233,15 @@ class Game():
                 # Winning or losing interactive response
                 self.player.points = dealerCheck.checkPoints(self.player, self.table)
                 self.computer.points = dealerCheck.checkPoints(self.computer, self.table)
+                logging.info('Player points:{}'.format(self.player.points))
+                logging.info('Computer points:{}'.format(self.computer.points))
+
                 gui.updateOut(self.window, [self.player, self.computer][self.winnerIndex].name +
                             " wins $" + str(self.table.pot) + " with " +
                             [self.player, self.computer][self.winnerIndex].points + "!!")
+
+                logging.info('Winner:{}'.format([self.player, self.computer][self.winnerIndex].name))
+
                 gui.playHand(self.winnerIndex)
                 self.rewardWinner()
                 self.updateText()
@@ -227,11 +251,13 @@ class Game():
                     raise startOver
 
             except playerFold:
+                logging.info('Player fold')
                 self.winnerIndex = 1
                 self.foldFunction()
                 gui.playHand(self.winnerIndex)
 
             except comFold:
+                logging.info('Computer fold')
                 self.winnerIndex = 0
                 self.foldFunction()
                 gui.playHand(self.winnerIndex)

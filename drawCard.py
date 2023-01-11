@@ -1,7 +1,7 @@
 import funPIL as df
 import io
 import base64
-import files
+import files_content
 from PIL import Image, ImageDraw
 
 # Declaring card template
@@ -31,8 +31,8 @@ def main(card):
 
     # Links to which base64 image it should be used
     pasteSuit = ["♣", "♠", "♥", "♦"].index(card.suit)
-    pasteSuit = [files.club, files.spade, files.heart,
-                 files.diamond][pasteSuit]
+    pasteSuit = [files_content.club, files_content.spade, files_content.heart,
+                 files_content.diamond][pasteSuit]
 
     # Open the base64 image and adapts it
     pasteSuit = Image.open(io.BytesIO(

@@ -1,6 +1,6 @@
 import random
 import numpy as np
-
+import logging
 
 class Participant:
     def __init__(self,
@@ -18,7 +18,7 @@ class Participant:
         self.minBet = None
         self.maxBet = None
 
-    def betting(self, bet):
+    def betting(self, bet,name = None):
         if self.bet is None:
             self.bet = 0
         if self.money < bet:
@@ -27,6 +27,11 @@ class Participant:
         self.bet += bet
         if self.money == 0:
             self.allin = True
+        
+        if name is None:
+            name = self.name
+        logging.info(self.name + " bet " + str(bet))
+
 
     def clear(self):
         self.cards = None
@@ -38,6 +43,7 @@ class Participant:
 
     def giveCards(self, deck):
         self.cards = deck.draw(2)
+        return [str(each) for each in self.cards]
 
 
 class Player(Participant):
@@ -45,13 +51,13 @@ class Player(Participant):
         super().__init__(name, money, cards, bet,points)
 
     def betting(self, bet):
-        super().betting(bet)
+        super().betting(bet,self.name)
 
     def clear(self):
         super().clear()
 
     def giveCards(self, deck):
-        super().giveCards(deck)
+        return super().giveCards(deck)
 
 
 class Computer(Participant):
@@ -59,13 +65,13 @@ class Computer(Participant):
         super().__init__(name, money, cards, bet,points)
 
     def betting(self, bet):
-        super().betting(bet)
+        super().betting(bet,self.name)
 
     def clear(self):
         super().clear()
 
     def giveCards(self, deck):
-        super().giveCards(deck)
+        return super().giveCards(deck)
 
     def winningStatistic(self):
         # I was too lazy to study 2 players pocket hands winning statistic
