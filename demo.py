@@ -1,6 +1,4 @@
 import random
-import drawCard
-import stupid
 import numpy as np
 
 
