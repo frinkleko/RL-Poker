@@ -125,11 +125,68 @@ class Img(file):
 
 ### UI
 
+This project use `PySimpleGUI` as the GUI module.  All the UI codes is stored in `poker_gui.py`
 
+We design two GUI windows. One is the Welcome UI for inputting basic info.
+
+![image-20230111231855780](https://raw.githubusercontent.com/frinkleko/PicgoPabloBED/main/images_for_wechatimage-20230111231855780.png)
+
+The other is the game UI for playing.
+
+![image-20230111233320007](https://raw.githubusercontent.com/frinkleko/PicgoPabloBED/main/images_for_wechatimage-20230111233320007.png)
+
+![image-20230111233344952](https://raw.githubusercontent.com/frinkleko/PicgoPabloBED/main/images_for_wechatimage-20230111233344952.png)
 
 ### file read and write
 
+All the Game information is  written in log file. Logging info are format like:
 
+```bash
+2023-01-11 Wednesday 21:43:38 root:INFO:New Game
+2023-01-11 Wednesday 21:43:38 root:INFO:Clear
+2023-01-11 Wednesday 21:43:38 root:INFO:Give cards
+2023-01-11 Wednesday 21:43:38 root:INFO:Player cards: ['11♣', '7♠']
+2023-01-11 Wednesday 21:43:38 root:INFO:Computer cards: ['3♥', '13♥']
+2023-01-11 Wednesday 21:43:39 root:INFO:Nobody bet 500
+2023-01-11 Wednesday 21:43:41 root:INFO:StupidAI bet 1000
+2023-01-11 Wednesday 21:43:42 root:INFO:Table allin:False
+2023-01-11 Wednesday 21:43:42 root:INFO:Turn: 0
+2023-01-11 Wednesday 21:43:42 root:INFO:Player turn
+2023-01-11 Wednesday 21:43:44 root:INFO:Player action: Bet 500
+2023-01-11 Wednesday 21:43:44 root:INFO:Nobody bet 500
+2023-01-11 Wednesday 21:43:46 root:INFO:Flop
+2023-01-11 Wednesday 21:43:46 root:INFO:Cards on table: [14♥, 6♦, 5♥]
+...
+2023-01-11 Wednesday 21:52:12 root:INFO:Player points:TRIPLE
+2023-01-11 Wednesday 21:52:12 root:INFO:Computer points:TRIPLE
+2023-01-11 Wednesday 21:52:12 root:INFO:Winner:StupidAI
+```
+
+We read file from logging file and image file. Image files are stored as base64, it’s easy and also save for both writing and reading. In Image Class:
+
+```python
+import base64
+import funPIL as df
+import io
+import base64
+from PIL import Image, ImageDraw
+
+class Img(file):
+    def __init__(self, name, mode = 'r'):
+        self.name = name
+        self.mode = mode
+        self.file = open(self.name, mode=mode)
+        self.image = Image.open(io.BytesIO(base64.b64decode(self.data.read()))).convert('RGBA')
+    def read(self, name, mode='r'):
+        self.file = open(name,mode=mode)
+        self.image = Image.open(io.BytesIO(base64.b64decode(self.file.read()))).convert('RGBA')
+    def write(self, content, mode='w'):
+        self.file = open(self.name, mode=mode)
+        self.file.write(base64.b64encode(content))
+    def resize(self, size):
+        self.image, _ = df.resize(self.image, *size)
+        return self.image
+```
 
 ### Code lines number
 
@@ -141,6 +198,12 @@ class Img(file):
 
 ## Summary
 
-
+In this project, we design 1v1 Texas game with GUI and a simple AI in OOP way. OOP is a great concept, which helps the project to organize all the parts and help to write codes more effectively.
 
 ### Further discussion
+
+We design this game for fun. Meanwhile, we also want to have further practice of this game. We mainly have two goal to achieve in future.
+
++ make this game online and more players can join in one game
+
++ apply reinforce learning to this game
