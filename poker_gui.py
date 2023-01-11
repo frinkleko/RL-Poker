@@ -122,7 +122,7 @@ def startGame():
             ]),
             sg.Column([
                 [sg.Input("Nobody", key="PLAYERNAME")],
-                [sg.Input("Skynet", key="COMPUTERNAME")],
+                [sg.Input("StupidAI", key="COMPUTERNAME")],
                 [sg.Input(str(10000), key="STARTINGMONEY")],
                 [sg.Input(str(500), key="MINBET")],
                 [sg.Input("Play", key="GAMEMODE")],

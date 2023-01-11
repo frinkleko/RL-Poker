@@ -158,13 +158,12 @@ class Game():
 
 #############################################################################
     def run(self):
-        while self.player.money != 0 and self.computer.money != 0:
-
-            logging.basicConfig(handlers=[logging.FileHandler(filename='log/{}_{}_{}.txt'.format(self.player.name,self.computer.name,datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
+        logging.basicConfig(handlers=[logging.FileHandler(filename='log/{}_{}.txt'.format(self.player.name,self.computer.name),
                                                             encoding='utf-8', mode='a+')],
                                 format="%(asctime)s %(name)s:%(levelname)s:%(message)s", 
                                 datefmt="%F %A %T", 
                                 level=logging.INFO)
+        while self.player.money != 0 and self.computer.money != 0:
             logging.info('New Game')
             try:
                 # Reset all the self.table
