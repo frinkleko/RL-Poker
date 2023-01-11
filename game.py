@@ -2,7 +2,7 @@ import classes
 import poker_gui as gui
 import dealerCheck
 from exceptions import *
-from demo import Player,Computer
+from participant import Player,Computer
 import time
 
 class Game():
@@ -146,11 +146,15 @@ class Game():
 
 #############################################################################
     def run(self):
+        import logging
         while self.player.money != 0 and self.computer.money != 0:
+            logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s',
+                filename='{}_{}_{}.txt'.format(self.player.name,self.computer.name,time.localtime()[0]), filemode='w')
+            logging.info('New Game')
             try:
                 # Reset all the self.table
                 self.clear()
-            
+
 
                 # Shuffle deck and give cards
                 deck = self.giveCards()
