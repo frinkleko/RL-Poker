@@ -1,8 +1,8 @@
-import classes
+import Env
 import poker_gui as gui
 import dealerCheck
 from exceptions import *
-from participant import Player,Computer
+import Participant
 import logging
 
 class Game():
@@ -14,9 +14,9 @@ class Game():
         self.mode = mode
 
         # init players and self.table
-        self.player = Player(self.playerName, self.startingMoney, None, 0, None)
-        self.computer = Computer(self.computerName, self.startingMoney, None, 0, None)
-        self.table = classes.Table(self.minBet, self.startingMoney)
+        self.player = Participant.Player(self.playerName, self.startingMoney, None, 0, None)
+        self.computer = Participant.Computer(self.computerName, self.startingMoney, None, 0, None)
+        self.table = Env.Table(self.minBet, self.startingMoney)
 
         self.window = gui.gameWindow(self.minBet, self.player, self.computer)
 
@@ -31,7 +31,7 @@ class Game():
     def giveCards(self):
         # init deck for this game
 
-        deck = classes.Deck()
+        deck = Env.Deck()
 
         # 4 cards are drawn from deck by twice
         player_cards = self.player.giveCards(deck)

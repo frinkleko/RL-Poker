@@ -5,7 +5,7 @@ import io
 import base64
 from PIL import Image, ImageDraw
 
-class file(metaclass=abc.ABCMeta):
+class File(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def __init__(self, name, mode):
         pass
