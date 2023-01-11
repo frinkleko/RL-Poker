@@ -64,7 +64,7 @@ buttons = {
     "Check": [*roundButtonImg("Check", *colors)],
     "Fold": [*roundButtonImg("Fold", *colors)],
     "New Game": [*roundButtonImg("New Game", *colors)],
-    "Read Record" : [*roundButtonImg("Read Record", *colors)],
+    "Read Record": [*roundButtonImg("Read Record", *colors)],
     "Continue": [*roundButtonImg("Continue", *colors, False)],
 }
 
@@ -125,7 +125,7 @@ def startGame():
                 [sg.Input("Skynet", key="COMPUTERNAME")],
                 [sg.Input(str(10000), key="STARTINGMONEY")],
                 [sg.Input(str(500), key="MINBET")],
-                [sg.Input("Play",key="GAMEMODE")],
+                [sg.Input("Play", key="GAMEMODE")],
             ]),
         ],
         [sg.Push(), buttons2["START"][0],
@@ -335,7 +335,10 @@ def giveCards(window, player):
 
     # Updating GUI of COM with facedown cards
     display = ["C_1", "C_2"]
-    [window[element].Update(data=files_content.cardBack) for element in display]
+    [
+        window[element].Update(data=files_content.cardBack)
+        for element in display
+    ]
 
     # Updating GUI of table
     [
@@ -381,9 +384,6 @@ def updateBet(window, player):
     window["BET"].Update(range=(player.minBet, player.maxBet))
     window.refresh()
 
-import logging
-logging.basicConfig(filename='log.txt', level=logging.INFO)
-
 def updateText(window, player, computer, table):
 
     datas = [player.bet, player.money, computer.bet, computer.money, table.pot]
@@ -400,7 +400,6 @@ def updateText(window, player, computer, table):
             else:
                 datas[i] = datas[i].replace("$0", "ALLIN")
 
-    logging.info(datas)
     elements = ["PLAYERBET", "PLAYERMONEY", "COMBET", "COMMONEY", "TABLEPOT"]
 
     [

@@ -1,6 +1,6 @@
 import random
 import drawCard
-
+import logging
 
 class Table:
     def __init__(self,
@@ -82,6 +82,9 @@ class Table:
             self.cards = deck.draw(3)
         elif len(self.cards) == 3 or len(self.cards) == 4:
             self.cards += deck.draw(1)
+        
+        logging.info('Flop')
+        logging.info('Cards on table: {}'.format(self.cards))
 
 
 class Card:
@@ -92,6 +95,12 @@ class Card:
 
     def addImage(self):
         self.image = drawCard.main(self)
+    
+    def __str__(self):
+        return '{}{}'.format(self.number, self.suit)
+
+    def __repr__(self):
+        return '{}{}'.format(self.number, self.suit)
 
 
 class Deck:
