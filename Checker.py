@@ -9,8 +9,8 @@ class Check:
         self.table = table
         self.player = None
         self.playersScore = [self.check() for self.player in self.players]
-        self.playersScore = [POINTS.index(each) for each in self.playersScore]
-        self.bestHand = min(playersScore)
+        self.playersScore = [self.POINTS.index(each) for each in self.playersScore]
+        self.bestHand = min(self.playersScore)
         self.isItDraw = True if self.playersScore.count(self.bestHand) > 1 else False
         self.indices = None
 
@@ -89,7 +89,7 @@ class Check:
             ROYALFLUSH, STRAIGHTFLUSH, FOUROFAKIND, FULL, FLUSH, STRAIGHT, TRIPLE,
             TWOPAIRS, ONEPAIR, HIGHCARD
         ]]
-        name = [POINTS]
+        name = [self.POINTS]
         for value, name in list(zip(*value + name)):
             if value == True:
                 return name
@@ -99,13 +99,13 @@ class Check:
         if self.isItDraw:
             self.indices = [i for i, x in enumerate(self.playersScore) if x == self.bestHand]
 
-            if bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
+            if self.bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
                 result = "FlushDraw"
 
-            elif bestHand == 'STRAIGHT':
+            elif self.bestHand == 'STRAIGHT':
                 result = "StraightDraw"
 
-            elif bestHand == 'FULL':
+            elif self.bestHand == 'FULL':
                 result = "FullDraw"
 
             else:

@@ -53,7 +53,7 @@ class Drawcard(Card):
         pasteSuit, _ = df.resize(pasteSuit, *[int(size * 0.25)] * 2)
 
         # Define font
-        font = df.fontDefiner(FONTPATH, int(size * 0.175))
+        font = df.fontDefiner(self.FONTPATH, int(size * 0.175))
         # Define coordinates
         x, y = int(size * 0.125), int(size * 0.075)
         # Define coordinates for pasting suit image

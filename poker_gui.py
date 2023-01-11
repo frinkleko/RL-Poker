@@ -365,17 +365,17 @@ def flipCOM(window, computer):
 
 def updateFlop(window, table):
 
-    if len(table.getCards()) == 3:
+    if len(table.cards) == 3:
         rangeIndex = [1, 2, 3]
-    elif len(table.getCards()) == 4:
+    elif len(table.cards) == 4:
         rangeIndex = [4]
-    elif len(table.getCards()) == 5:
+    elif len(table.cards) == 5:
         rangeIndex = [5]
 
     for each in rangeIndex:
         t = Thread(target=playFlip, args=())
         t.start()
-        window["T_" + str(each)].Update(data=table.getCards()[each - 1].image)
+        window["T_" + str(each)].Update(data=table.cards[each - 1].image)
         window.refresh()
         t.join()
 
