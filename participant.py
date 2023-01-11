@@ -10,8 +10,8 @@ class Participant:
                  bet=None,
                  points=None):
         self.name = name
-        self.cards = cards
-        self.money = money
+        self.__cards = cards
+        self.__money  = money
         self.bet = bet
         self.points = points
         self.allin = False
@@ -21,20 +21,31 @@ class Participant:
     def betting(self, bet,name = None):
         if self.bet is None:
             self.bet = 0
-        if self.money < bet:
-            bet = self.money
-        self.money -= bet
+        if self.__money  < bet:
+            bet = self.__money 
+        self.__money  -= bet
         self.bet += bet
-        if self.money == 0:
+        if self.__money  == 0:
             self.allin = True
         
         if name is None:
             name = self.name
         logging.info(self.name + " bet " + str(bet))
 
+    def getMoney(self):
+        return self.__money
+
+    def setMoney(self, money):
+        self.__money  = money
+    
+    def getCards(self):
+        return self.__cards
+    
+    def setCards(self, cards):
+        self.__cards = cards
 
     def clear(self):
-        self.cards = None
+        self.__cards = None
         self.bet = None
         self.minBet = None
         self.maxBet = None
@@ -42,8 +53,8 @@ class Participant:
         self.allin = False
 
     def giveCards(self, deck):
-        self.cards = deck.draw(2)
-        return [str(each) for each in self.cards]
+        self.__cards = deck.draw(2)
+        return [str(each) for each in self.__cards]
 
 
 class Player(Participant):
@@ -82,9 +93,9 @@ class Computer(Participant):
         start = 17
         step = 1.9
         numberStat = [0, 0] + np.arange(start, start + step * 13, step).tolist()
-        numbers = [each.number for each in self.cards]
+        numbers = [each.number for each in self.__cards]
 
-        if self.cards[0].suit == self.cards[1].suit:
+        if self.__cards[0].suit == self.__cards[1].suit:
             winning += 3
 
         winning += numberStat[numbers[0]] + numberStat[numbers[1]]
@@ -103,7 +114,7 @@ class Computer(Participant):
         numbers = [each.number for each in table.cards]
         numbers = {i: numbers.count(i) for i in numbers}
 
-        inHand = [each.number for each in self.cards]
+        inHand = [each.number for each in self.__cards]
         inHand = {i: inHand.count(i) for i in inHand}
 
         total = {
@@ -169,7 +180,7 @@ class Computer(Participant):
         if (possible or improbable) and not actuallyThereIs:
 
             # Let's sort and remove duplicates com hand and table
-            total = [each.number for each in self.cards] + numbers
+            total = [each.number for each in self.__cards] + numbers
             total = list(dict.fromkeys(total))
             total.sort(reverse=True)
 
@@ -197,7 +208,7 @@ class Computer(Participant):
 
         if actuallyThereIs:
             # It's time to check if com has something for the straight
-            hand = [each.numbers for each in self.cards]
+            hand = [each.numbers for each in self.__cards]
 
             # Check the highest card of the scale +1 is in com hand
             if table[0] + 1 in hand:
@@ -216,7 +227,7 @@ class Computer(Participant):
         suits = {i: suits.count(i) for i in suits}
 
         # Get a count of the suits on table + hand in a dict
-        add = [each.suit for each in self.cards]
+        add = [each.suit for each in self.__cards]
         total = suits.copy()
         for each in add:
             if each in total:
@@ -232,20 +243,20 @@ class Computer(Participant):
                     card.number for card in table.cards if card.suit == flushSuit
                 ])
                 maxHand = max(
-                    [card.number for card in self.cards if card.suit == flushSuit])
+                    [card.number for card in self.__cards if card.suit == flushSuit])
                 if maxTable < maxHand:
                     return "Flush on table and max hand", max([
-                        card.number for card in self.cards
+                        card.number for card in self.__cards
                         if card.suit == flushSuit
                     ])
                 else:
                     return "Flush on table and hand", max([
-                        card.number for card in self.cards
+                        card.number for card in self.__cards
                         if card.suit == flushSuit
                     ])
             else:
                 return "Flush on table and highcard", max(
-                    [card.number for card in self.cards])
+                    [card.number for card in self.__cards])
 
         # If sum of hand and table suit is >= to 5
         if True in [each >= 5 for each in total.values()]:

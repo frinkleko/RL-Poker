@@ -34,8 +34,8 @@ class Table:
             if all([each == None for each in otherPlayersBets]):
                 player.minBet = self.blind
                 # Or player can check
-                player.maxBet = min(*[each.money for each in otherPlayers],
-                                    player.money)
+                player.maxBet = min(*[each.getMoney() for each in otherPlayers],
+                                    player.getMoney())
 
             else:
                 otherPlayersBets = [each for each in otherPlayersBets]
@@ -47,7 +47,7 @@ class Table:
                     otherPlayersBets) == 0 else max(otherPlayersBets)
 
                 player.maxBet = min([
-                    bet + each.money for bet, each in list(
+                    bet + each.getMoney() for bet, each in list(
                         zip(*[[*otherPlayersBets, 0], [*otherPlayers, player]
                               ]))
                 ])
@@ -59,8 +59,8 @@ class Table:
 
             # Accounting all bets+money of players
             player.maxBet = min(
-                *[each.bet + each.money for each in otherPlayers],
-                player.bet + player.money)
+                *[each.bet + each.getMoney() for each in otherPlayers],
+                player.bet + player.getMoney())
 
     def addToPot(self, players):
         self.pot = self.pot + sum(
@@ -70,7 +70,7 @@ class Table:
             players[i].bet = None
 
     def payPlayer(self, player):
-        player.money += self.pot
+        player.setMoney(player.getMoney() + self.pot)
         self.pot = 0
 
     def isALLIN(self, players):

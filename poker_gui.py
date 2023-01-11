@@ -194,7 +194,7 @@ def gameWindow(minBet, player, computer):
                 font=font,
             ),
             sg.Text(
-                "$" + str(computer.money),
+                "$" + str(computer.getMoney()),
                 text_color="#FF0000",
                 font=minifont,
                 key="COMMONEY",
@@ -242,7 +242,7 @@ def gameWindow(minBet, player, computer):
             sg.Push(),
             sg.Text(player.name, text_color="#FF0000", font=font),
             sg.Text(
-                "$" + str(player.money),
+                "$" + str(player.getMoney()),
                 text_color="#FF0000",
                 font=minifont,
                 key="PLAYERMONEY",
@@ -326,7 +326,7 @@ def giveCards(window, player):
     # Updating GUI of player
     display = ["P_1", "P_2"]
 
-    for element, card in list(zip(*[display, player.cards])):
+    for element, card in list(zip(*[display, player.getCards()])):
         t = Thread(target=playFlip, args=())
         t.start()
         window[element].Update(data=card.image)
@@ -355,7 +355,7 @@ def flipCOM(window, computer):
     display = ["C_1", "C_2"]
     [
         window[element].Update(data=card.image)
-        for element, card in list(zip(*[display, computer.cards]))
+        for element, card in list(zip(*[display, computer.getCards()]))
     ]
     window.refresh()
     t.join()
@@ -365,17 +365,17 @@ def flipCOM(window, computer):
 
 def updateFlop(window, table):
 
-    if len(table.cards) == 3:
+    if len(table.getCards()) == 3:
         rangeIndex = [1, 2, 3]
-    elif len(table.cards) == 4:
+    elif len(table.getCards()) == 4:
         rangeIndex = [4]
-    elif len(table.cards) == 5:
+    elif len(table.getCards()) == 5:
         rangeIndex = [5]
 
     for each in rangeIndex:
         t = Thread(target=playFlip, args=())
         t.start()
-        window["T_" + str(each)].Update(data=table.cards[each - 1].image)
+        window["T_" + str(each)].Update(data=table.getCards()[each - 1].image)
         window.refresh()
         t.join()
 
@@ -386,7 +386,7 @@ def updateBet(window, player):
 
 def updateText(window, player, computer, table):
 
-    datas = [player.bet, player.money, computer.bet, computer.money, table.pot]
+    datas = [player.bet, player.getMoney(), computer.bet, computer.getMoney(), table.pot]
     datas = [
         "$" + str(each) if type(each) == int else str("None") for each in datas
     ]

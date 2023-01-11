@@ -7,7 +7,7 @@ SUITS = ["♥", "♦", "♣", "♠"]
 
 def checkPoints(player, table):
 
-    a = player.cards.copy()
+    a = player.getCards().copy()
     if table != None and table.cards != None:
         a += table.cards.copy()
     numbers, suits = list(zip(*[[each.number, each.suit] for each in a]))
@@ -90,7 +90,7 @@ def checkHighestCard(players, indices):
     maxNew, minNew = [], []
     for i in range(len(players)):
         if i in indices:
-            newPlayers.append([card.number for card in players[i].cards])
+            newPlayers.append([card.number for card in players[i].getCards()])
         else:
             newPlayers.append([0, 0])
         maxNew.append(max(newPlayers[i]))
@@ -113,9 +113,9 @@ def checkHighestCard(players, indices):
             winner = []
             for i in range(len(players)):
                 if i in indices:
-                    numbers = [card.number for card in players[i].cards]
+                    numbers = [card.number for card in players[i].getCards()]
                     if maxTable in numbers:
-                        suits = [card.suit for card in players[i].cards]
+                        suits = [card.suit for card in players[i].getCards()]
                         winner.append(
                             min([SUITS.index(each) for each in suits]))
                 else:
@@ -142,7 +142,7 @@ def checkFlushDraw(players, table, indices):
         if i == indices:
             playersSuit.append([
                 card.number if card.suit == flushSuit else 0
-                for card in players[i].cards
+                for card in players[i].getCards()
             ])
 
     # Get max card
@@ -158,7 +158,7 @@ def checkFlushDraw(players, table, indices):
 def checkStraightDraw(players, table, indices):
 
     totalPlayers = [
-        players[i].cards + table.cards if i in indices else 0
+        players[i].getCards() + table.cards if i in indices else 0
         for i in range(len(players))
     ]
 
@@ -193,7 +193,7 @@ def checkFullDraw(players, table, indices):
     double = []
     for i in range(len(players)):
         if i in indices:
-            total = players[i].cards + table[i].cards
+            total = players[i].getCards() + table[i].cards
             total = [card.number for card in total]
             total = {i: total.count(i) for i in total}
 

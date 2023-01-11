@@ -3,7 +3,6 @@ import poker_gui as gui
 import dealerCheck
 from exceptions import *
 from participant import Player,Computer
-import datetime
 import logging
 
 class Game():
@@ -137,9 +136,9 @@ class Game():
         gui.updateText(self.window, self.player, self.computer, self.table)
 
     def actionDone(self, p1, p2):
-        if p1.money == 0 and p2.money != 0:
+        if p1.getMoney() == 0 and p2.getMoney() != 0:
             return p1.name + " goes ALLIN with $" + str(p1.bet) + "!!!!"
-        elif p1.money == 0 and p2.money == 0:
+        elif p1.getMoney() == 0 and p2.getMoney() == 0:
             return p1.name + " follows ALLIN with $" + str(p1.bet) + "!!!!"
         elif p1.bet == 0:
             return p1.name + " checks."
@@ -163,7 +162,7 @@ class Game():
                                 format="%(asctime)s %(name)s:%(levelname)s:%(message)s", 
                                 datefmt="%F %A %T", 
                                 level=logging.INFO)
-        while self.player.money != 0 and self.computer.money != 0:
+        while self.player.getMoney() != 0 and self.computer.getMoney() != 0:
             logging.info('New Game')
             try:
                 # Reset all the self.table
