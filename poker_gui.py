@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-import files
+import files_content
 from pathlib import Path
 from threading import Thread
 from playsound import playsound
@@ -205,7 +205,7 @@ def gameWindow(minBet, player, computer):
         [
             sg.Push(),
             *[
-                sg.Image(data=files.placeHolder,
+                sg.Image(data=files_content.placeHolder,
                          key="C_" + str(each),
                          p=((5, 5), (20, 20))) for each in list(range(1, 3))
             ],
@@ -221,7 +221,7 @@ def gameWindow(minBet, player, computer):
         [
             sg.Push(),
             [
-                sg.Image(data=files.placeHolder,
+                sg.Image(data=files_content.placeHolder,
                          key="T_" + str(each),
                          p=((5, 5), (20, 20))) for each in [1, 2, 3, 4, 5]
             ],
@@ -232,7 +232,7 @@ def gameWindow(minBet, player, computer):
         [
             sg.Push(),
             *[
-                sg.Image(data=files.placeHolder,
+                sg.Image(data=files_content.placeHolder,
                          key="P_" + str(each),
                          p=((5, 5), (20, 20))) for each in list(range(1, 3))
             ],
@@ -335,11 +335,11 @@ def giveCards(window, player):
 
     # Updating GUI of COM with facedown cards
     display = ["C_1", "C_2"]
-    [window[element].Update(data=files.cardBack) for element in display]
+    [window[element].Update(data=files_content.cardBack) for element in display]
 
     # Updating GUI of table
     [
-        window["T_" + str(each)].Update(data=files.placeHolder)
+        window["T_" + str(each)].Update(data=files_content.placeHolder)
         for each in [1, 2, 3, 4, 5]
     ]
 
@@ -447,7 +447,7 @@ def clear(window):
     elements = ["C_" + str(i) for i in range(1, 3)]
     elements += ["P_" + str(i) for i in range(1, 3)]
     elements += ["T_" + str(i) for i in range(1, 6)]
-    [window[each].Update(data=files.placeHolder) for each in elements]
+    [window[each].Update(data=files_content.placeHolder) for each in elements]
     # [window["T_"+str(each)].Update(data=files.placeHolder) for each in list(range(1,6))]
 
 
