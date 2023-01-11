@@ -16,7 +16,7 @@ class File(metaclass=abc.ABCMeta):
     def write(self):
         pass
 
-class Record(file):
+class Record(File):
     def __init__(self, name, mode):
         self.name = name
         self.mode = mode
@@ -26,7 +26,7 @@ class Record(file):
     def write(self, content):
         self.file.write(content)
 
-class Img(file):
+class Img(File):
     def __init__(self, name, mode = 'r'):
         self.name = name
         self.mode = mode
