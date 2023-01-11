@@ -1,15 +1,17 @@
 import classes
 import poker_gui as gui
 import dealerCheck
-import stupid
 from exceptions import *
 from demo import Player,Computer
+import time
+
 class Game():
     def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
         self.playerName = playerName
         self.computerName = computerName
         self.startingMoney = startingMoney
         self.minBet = minBet
+        self.mode = mode
 
         # init players and self.table
         self.player = Player(self.playerName, self.startingMoney, None, 0, None)
@@ -79,7 +81,7 @@ class Game():
         self.table.checkMinMaxBet(self.computer, [self.player])
 
         # stupid action 
-        action, bet = stupid.main(self.computer, self.table, self.player)
+        action, bet = self.computer.main(self.table, self.player)
         if action in ['Bet', 'Check']:
             self.computer.betting(bet)
         elif action == 'Fold':
@@ -148,6 +150,7 @@ class Game():
             try:
                 # Reset all the self.table
                 self.clear()
+            
 
                 # Shuffle deck and give cards
                 deck = self.giveCards()

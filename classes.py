@@ -2,45 +2,6 @@ import random
 import drawCard
 
 
-class Player:
-    def __init__(self,
-                 name='player',
-                 money=0,
-                 cards=None,
-                 bet=None,
-                 points=None):
-        self.name = name
-        self.cards = cards
-        self.money = money
-        self.bet = bet
-        self.points = points
-        self.allin = False
-        self.minBet = None
-        self.maxBet = None
-
-    def betting(self, bet):
-        if self.bet == None:
-            self.bet = 0
-
-        if self.money < bet:
-            bet = self.money
-        self.money -= bet
-        self.bet += bet
-        if self.money == 0:
-            self.allin = True
-
-    def clear(self):
-        self.cards = None
-        self.bet = None
-        self.minBet = None
-        self.maxBet = None
-        self.points = None
-        self.allin = False
-
-    def giveCards(self, deck):
-        self.cards = deck.draw(2)
-
-
 class Table:
     def __init__(self,
                  blind,
