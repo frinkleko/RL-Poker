@@ -3,7 +3,7 @@ import poker_gui as gui
 import dealerCheck
 import stupid
 from exceptions import *
-
+from demo import Player,Computer
 class Game():
     def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
         self.playerName = playerName
@@ -12,8 +12,8 @@ class Game():
         self.minBet = minBet
 
         # init players and self.table
-        self.player = classes.Player(self.playerName, self.startingMoney, None, 0, None)
-        self.computer = classes.Player(self.computerName, self.startingMoney, None, 0, None)
+        self.player = Player(self.playerName, self.startingMoney, None, 0, None)
+        self.computer = Computer(self.computerName, self.startingMoney, None, 0, None)
         self.table = classes.Table(self.minBet, self.startingMoney)
 
         self.window = gui.gameWindow(self.minBet, self.player, self.computer)

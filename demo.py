@@ -23,7 +23,6 @@ class Participant:
     def betting(self, bet):
         if self.bet is None:
             self.bet = 0
-
         if self.money < bet:
             bet = self.money
         self.money -= bet
@@ -45,7 +44,7 @@ class Participant:
 
 class Player(Participant):
     def __init__(self, name, money=0, cards=None, bet=None, points=None):
-        super().__init__(self, name, money, cards, bet)
+        super().__init__(name, money, cards, bet,points)
 
     def betting(self, bet):
         super().betting(bet)
@@ -59,7 +58,7 @@ class Player(Participant):
 
 class Computer(Participant):
     def __init__(self, name, money=0, cards=None, bet=None, points=None):
-        super().__init__(self, name, money, cards, bet)
+        super().__init__(name, money, cards, bet,points)
 
     def betting(self, bet):
         super().betting(bet)
