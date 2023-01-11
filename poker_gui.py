@@ -161,7 +161,7 @@ def startGame():
 
             if startingMoney.isdigit() and minBet.isdigit():
                 startingMoney, minBet = int(startingMoney), int(minBet)
-                if startingMoney > minBet:
+                if startingMoney > minBet and minBet > 0:
                     window.close()
                     return playerName, computerName, startingMoney, minBet, mode
 

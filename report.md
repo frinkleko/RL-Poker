@@ -6,6 +6,13 @@
 
 In this project, we use OOP way design a 1v1 Texas poker game. Meanwhile, we design a simple math-based AI as the competitor for user.
 
+### Usage
+
+```bash
+pip install -r requirements.txt
+python playGame.py
+```
+
 ## Analysis and design
 
 For the Texas game, we need to have classes of environment like table, deck, card. We also need to have classes of player and computer. After all, a checker class/function to decide who is winner is also needed. For GUI recourses, it is also a great idea to manage with class. So the project can be divided and designed as the following parts.
@@ -139,6 +146,8 @@ The other is the game UI for playing.
 
 ### file read and write
 
+In file read and write part, 
+
 All the Game information is  written in log file. Logging info are format like:
 
 ```bash
@@ -194,7 +203,38 @@ class Img(file):
 
 ## Test and Use
 
+### normal test
 
+In normal test, program finish one game normally. All the cards and money are granted to be greater or equal to 0. 
+
+![image-20230112001047424](https://raw.githubusercontent.com/frinkleko/PicgoPabloBED/main/images_for_wechatimage-20230112001047424.png)
+
+### bound test
+
+For the bet amount will be limited by the slider, while the slider is limited by plater’s balance, the bet per turn will be normal. Firstly, accomplish the bound test by bet the min or max bet. Secondly, test the basic info’s bound.
+
+In the second test, for python have been designed for huge number, the input number have no limit commonly. Meanwhile, in the basic input GUI, startingMoney and minBet are checked to granted normal running.
+
+```python
+if event == "START":
+    playerName, computerName, startingMoney, minBet, mode = (
+    values["PLAYERNAME"].strip("\n").strip(" "),
+    values["COMPUTERNAME"].strip("\n").strip(" "),
+    values["STARTINGMONEY"].strip("\n").strip(" "),
+    values["MINBET"].strip("\n").strip(" "),
+    values["GAMEMODE"].strip("\n").strip(" "),
+    )
+    if startingMoney.isdigit() and minBet.isdigit():
+        startingMoney, minBet = int(startingMoney), int(minBet)
+        if startingMoney > minBet:
+            window.close()
+            return playerName, computerName, startingMoney, minBet, mode
+
+```
+
+Thus, for the second bound test, startingMoney is 1 and minBet is 1. The program passes this
+
+### error test
 
 ## Summary
 
