@@ -4,6 +4,7 @@ import dealerCheck
 from exceptions import *
 import Participant
 import logging
+import os
 
 class Game():
     def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
@@ -157,6 +158,8 @@ class Game():
 
 #############################################################################
     def run(self):
+        if os.path.exists('log') == False:
+            os.mkdir('log')
         logging.basicConfig(handlers=[logging.FileHandler(filename='log/{}_{}.txt'.format(self.player.name,self.computer.name),
                                                             encoding='utf-8', mode='a+')],
                                 format="%(asctime)s %(name)s:%(levelname)s:%(message)s", 
