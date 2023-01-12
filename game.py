@@ -180,7 +180,7 @@ class Game():
                 gui.giveCards(self.window, self.player)
 
                 # Update GUI points
-                self.player.points = Checker.Check(self.player, self.table).check(self.player)
+                self.player.points = Checker.Check([self.player], self.table).check(self.player)
                 gui.updatePoints(self.window, self.player.points)
 
 
