@@ -8,7 +8,8 @@ import Checker
 
 
 class Game():
-    def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
+    def __init__(self, playerName, computerName, startingMoney, minBet,
+                 mode) -> None:
         self.playerName = playerName
         self.computerName = computerName
         self.startingMoney = startingMoney
@@ -16,8 +17,10 @@ class Game():
         self.mode = mode
 
         # init players and self.table
-        self.player = Participant.Player(self.playerName, self.startingMoney, None, 0, None)
-        self.computer = Participant.Computer(self.computerName, self.startingMoney, None, 0, None)
+        self.player = Participant.Player(self.playerName, self.startingMoney,
+                                         None, 0, None)
+        self.computer = Participant.Computer(self.computerName,
+                                             self.startingMoney, None, 0, None)
         self.table = Env.Table(self.minBet, self.startingMoney)
 
         self.window = gui.gameWindow(self.minBet, self.player, self.computer)
@@ -28,7 +31,8 @@ class Game():
         self.turn = [lambda: self.comTurn(), lambda: self.playerTurn()]
 
         self.smallBlind = [
-            lambda y, : y.betting(self.minBet), lambda y: y.betting(self.minBet * 2)
+            lambda y, : y.betting(self.minBet),
+            lambda y: y.betting(self.minBet * 2)
         ]
         self.smallFirst = [self.player, self.computer]
 
@@ -47,7 +51,7 @@ class Game():
 
     def playerTurn(self):
         logging.info("Player turn")
-        
+
         self.table.checkMinMaxBet(self.player, [self.computer])
         self.updateSliderAndText()
 
@@ -116,7 +120,8 @@ class Game():
             for i in range(len(self.turn)):
                 logging.info("Turn: " + str(i))
                 self.turn[i]()
-                if (self.player.bet == self.computer.bet and self.player.bet != None
+                if (self.player.bet == self.computer.bet
+                        and self.player.bet != None
                         and self.computer.bet != None):
                     raise endTurn
 
@@ -159,15 +164,22 @@ class Game():
         self.computer.clear()
         gui.clear(self.window)
 
+
 #############################################################################
+
     def run(self):
         if os.path.exists('log') == False:
             os.mkdir('log')
-        logging.basicConfig(handlers=[logging.FileHandler(filename='log/{}_{}.txt'.format(self.player.name,self.computer.name),
-                                                            encoding='utf-8', mode='a+')],
-                                format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
-                                datefmt="%F %A %T",
-                                level=logging.INFO)
+        logging.basicConfig(
+            handlers=[
+                logging.FileHandler(filename='log/{}_{}.txt'.format(
+                    self.player.name, self.computer.name),
+                                    encoding='utf-8',
+                                    mode='a+')
+            ],
+            format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
+            datefmt="%F %A %T",
+            level=logging.INFO)
         while self.player.getMoney() != 0 and self.computer.getMoney() != 0:
             logging.info('New Game')
             try:
@@ -181,9 +193,9 @@ class Game():
                 gui.giveCards(self.window, self.player)
 
                 # Update GUI points
-                self.player.points = Checker.Check([self.player], self.table).check(self.player)
+                self.player.points = Checker.Check(
+                    [self.player], self.table).check(self.player)
                 gui.updatePoints(self.window, self.player.points)
-
 
                 self.smallBlind[0](self.smallFirst[0])
                 self.updateText()
@@ -193,7 +205,6 @@ class Game():
                 self.updateText()
                 gui.playBet()
                 gui.pause()
-
 
                 self.turn.reverse()
                 #self.smallBlind.reverse()
@@ -217,7 +228,8 @@ class Game():
 
                     self.table.flop(deck)
                     gui.updateFlop(self.window, self.table)
-                    self.player.points = Checker.Check([self.player], self.table).check(self.player)
+                    self.player.points = Checker.Check(
+                        [self.player], self.table).check(self.player)
                     gui.updatePoints(self.window, self.player.points)
                     self.updateText()
 
@@ -236,16 +248,22 @@ class Game():
                 self.winnerIndex = self.declareWinner()
 
                 # Winning or losing interactive response
-                self.player.points = Checker.Check([self.player], self.table).check(self.player)
-                self.computer.points = Checker.Check([self.computer], self.table).check(self.computer)
+                self.player.points = Checker.Check(
+                    [self.player], self.table).check(self.player)
+                self.computer.points = Checker.Check(
+                    [self.computer], self.table).check(self.computer)
                 logging.info('Player points:{}'.format(self.player.points))
                 logging.info('Computer points:{}'.format(self.computer.points))
 
-                gui.updateOut(self.window, [self.player, self.computer][self.winnerIndex].name +
-                            " wins $" + str(self.table.pot) + " with " +
-                            [self.player, self.computer][self.winnerIndex].points + "!!")
+                gui.updateOut(
+                    self.window,
+                    [self.player, self.computer][self.winnerIndex].name +
+                    " wins $" + str(self.table.pot) + " with " +
+                    [self.player, self.computer][self.winnerIndex].points +
+                    "!!")
 
-                logging.info('Winner:{}'.format([self.player, self.computer][self.winnerIndex].name))
+                logging.info('Winner:{}'.format([self.player, self.computer
+                                                 ][self.winnerIndex].name))
 
                 gui.playHand(self.winnerIndex)
                 self.rewardWinner()
@@ -269,7 +287,7 @@ class Game():
 
         self.window.close()
         return None
-    
+
     def debug(self):
         self.player.money = 1000
         self.computer.money = 1000
@@ -285,9 +303,14 @@ class Game():
 
         if os.path.exists('log') == False:
             os.mkdir('log')
-        logging.basicConfig(handlers=[logging.FileHandler(filename='log/debug_{}_{}.txt'.format(self.player.name,self.computer.name),
-                                                            encoding='utf-8', mode='a+')],
-                                format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
-                                datefmt="%F %A %T",
-                                level=logging.INFO)
+        logging.basicConfig(
+            handlers=[
+                logging.FileHandler(filename='log/debug_{}_{}.txt'.format(
+                    self.player.name, self.computer.name),
+                                    encoding='utf-8',
+                                    mode='a+')
+            ],
+            format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
+            datefmt="%F %A %T",
+            level=logging.INFO)
         self.run()

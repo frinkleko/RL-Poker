@@ -1,4 +1,6 @@
 import logging
+
+
 class startOver(Exception):
     # This exception is raised when the user wants to start over
     logging.info("startOver exception raised")

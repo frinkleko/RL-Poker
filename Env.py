@@ -2,6 +2,7 @@ import random
 import drawCard
 import logging
 
+
 class Table:
     def __init__(self,
                  blind,
@@ -34,8 +35,9 @@ class Table:
             if all([each == None for each in otherPlayersBets]):
                 player.minBet = self.blind
                 # Or player can check
-                player.maxBet = min(*[each.getMoney() for each in otherPlayers],
-                                    player.getMoney())
+                player.maxBet = min(
+                    *[each.getMoney() for each in otherPlayers],
+                    player.getMoney())
 
             else:
                 otherPlayersBets = [each for each in otherPlayersBets]
@@ -48,8 +50,8 @@ class Table:
 
                 player.maxBet = min([
                     bet + each.getMoney() for bet, each in list(
-                        zip(*[[*otherPlayersBets, 0], [*otherPlayers, player]
-                              ]))
+                        zip(*[[*otherPlayersBets, 0], [*otherPlayers, player]])
+                    )
                 ])
 
         else:
@@ -82,7 +84,7 @@ class Table:
             self.cards = deck.draw(3)
         elif len(self.cards) == 3 or len(self.cards) == 4:
             self.cards += deck.draw(1)
-        
+
         logging.info('Flop')
         logging.info('Cards on table: {}'.format(self.cards))
 
@@ -96,24 +98,25 @@ class Table:
         return 'Table: {} {} {} {} {} {}'.format(self.blind, self.cards,
                                                  self.pot, self.points,
                                                  self.allin, self.maxBet)
-    
+
     def __eq__(self, __o: object) -> bool:
         return self.blind == __o.blind and self.cards == __o.cards and self.pot == __o.pot and self.points == __o.points and self.allin == __o.allin and self.maxBet == __o.maxBet
-    
+
     def __sizeof__(self) -> int:
-        return len(self.cards), len(self.points),len(self.maxBet)
-    
+        return len(self.cards), len(self.points), len(self.maxBet)
+
     def __len__(self) -> int:
-        return len(self.cards), len(self.points),len(self.maxBet)
-    
+        return len(self.cards), len(self.points), len(self.maxBet)
+
     def __getitem__(self, __k: int) -> object:
         return self.cards, self.points, self.maxBet
-    
+
     def __setitem__(self, __k: int, __v: object) -> None:
         self.cards, self.points, self.maxBet = __v
 
     def __delitem__(self, __k: int) -> None:
         del self.cards, self.points, self.maxBet
+
 
 class Card:
     def __init__(self, number, suit, image=None):
@@ -123,13 +126,13 @@ class Card:
 
     def addImage(self):
         self.image = drawCard.main(self)
-    
+
     def __str__(self):
         return '{}{}'.format(self.number, self.suit)
 
     def __repr__(self):
         return '{}{}'.format(self.number, self.suit)
-    
+
     def __eq__(self, __o: object) -> bool:
         return self.number == __o.number and self.suit == __o.suit
 
@@ -163,9 +166,9 @@ class Deck:
 
     def __str__(self):
         return str(self.deck)
-    
+
     def __eq__(self, __o: object) -> bool:
         return self.deck == __o.deck
-    
+
     def __sizeof__(self) -> int:
         return len(self.deck)

@@ -18,10 +18,13 @@ class Check:
         self.players = players
         self.table = table
         self.player = None
-        self.playersScore = [self.check(self.player) for self.player in self.players]
+        self.playersScore = [
+            self.check(self.player) for self.player in self.players
+        ]
         self.playersScore = [POINTS.index(each) for each in self.playersScore]
         self.bestHand = min(self.playersScore)
-        self.isItDraw = True if self.playersScore.count(self.bestHand) > 1 else False
+        self.isItDraw = True if self.playersScore.count(
+            self.bestHand) > 1 else False
 
     def check(self, player):
         """
@@ -100,8 +103,8 @@ class Check:
                     STRAIGHTFLUSH = True
 
         value = [[
-            ROYALFLUSH, STRAIGHTFLUSH, FOUROFAKIND, FULL, FLUSH, STRAIGHT, TRIPLE,
-            TWOPAIRS, ONEPAIR, HIGHCARD
+            ROYALFLUSH, STRAIGHTFLUSH, FOUROFAKIND, FULL, FLUSH, STRAIGHT,
+            TRIPLE, TWOPAIRS, ONEPAIR, HIGHCARD
         ]]
         name = [POINTS]
         for value, name in list(zip(*value + name)):
@@ -110,15 +113,29 @@ class Check:
 
     def return_type(self):
         return self.isItDraw
-    
+
     def return_bestHand(self):
         return self.bestHand
-    
+
     def return_playersScore(self):
         return self.playersScore
-    
+
     def return_players(self):
         return self.players
+
+    def __dict__(self):
+        return {
+            "isItDraw": self.isItDraw,
+            "bestHand": self.bestHand,
+            "playersScore": self.playersScore,
+            "players": self.players
+        }
+
+    def __eq__(self, __o: object) -> bool:
+        return self.__dict__() == __o.__dict__()
+
+    def __str__(self) -> str:
+        return str(self.__dict__())
 
 
 class FlushDrawchecker(Check):
@@ -203,7 +220,9 @@ class FullDrawchecker(Check):
                 total = [card.number for card in total]
                 total = {i: total.count(i) for i in total}
 
-                tempTriple = [key for key, value in total.items() if value == 3]
+                tempTriple = [
+                    key for key, value in total.items() if value == 3
+                ]
                 try:
                     triple.append(max(tempTriple))
                 except:
@@ -285,7 +304,10 @@ def checkWinner(players, table):
     typ = first_check.return_type()
     if typ:
 
-        indices = [i for i, x in enumerate(first_check.playersScore) if x == first_check.bestHand]
+        indices = [
+            i for i, x in enumerate(first_check.playersScore)
+            if x == first_check.bestHand
+        ]
 
         if first_check.bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
             checker = FlushDrawchecker(players, table)
@@ -308,5 +330,3 @@ def checkWinner(players, table):
         res = first_check.playersScore.index(first_check.bestHand)
 
     return res
-
-

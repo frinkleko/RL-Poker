@@ -31,8 +31,10 @@ def main(card):
 
     # Links to which base64 image it should be used
     pasteSuit = ["♣", "♠", "♥", "♦"].index(card.suit)
-    pasteSuit = [files_content.club, files_content.spade, files_content.heart,
-                 files_content.diamond][pasteSuit]
+    pasteSuit = [
+        files_content.club, files_content.spade, files_content.heart,
+        files_content.diamond
+    ][pasteSuit]
 
     # Open the base64 image and adapts it
     pasteSuit = Image.open(io.BytesIO(
@@ -74,3 +76,10 @@ def main(card):
 
     # Return image in data
     return df.image_to_data(cardB)
+
+
+if __name__ == '__main__':
+    from Env import Card
+    card = Card(10, '♦')
+    card.addImage()
+    card.image.show()

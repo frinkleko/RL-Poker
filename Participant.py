@@ -3,32 +3,28 @@ import numpy as np
 import logging
 from abc import ABCMeta, abstractmethod
 
+
 class Participant(metaclass=ABCMeta):
-    def __init__(self,
-                 name,
-                 money=0,
-                 cards=None,
-                 bet=None,
-                 points=None):
+    def __init__(self, name, money=0, cards=None, bet=None, points=None):
         self.name = name
         self.__cards = cards
-        self.__money  = money
+        self.__money = money
         self.bet = bet
         self.points = points
         self.allin = False
         self.minBet = None
         self.maxBet = None
 
-    def betting(self, bet,name = None):
+    def betting(self, bet, name=None):
         if self.bet is None:
             self.bet = 0
-        if self.__money  < bet:
-            bet = self.__money 
-        self.__money  -= bet
+        if self.__money < bet:
+            bet = self.__money
+        self.__money -= bet
         self.bet += bet
-        if self.__money  == 0:
+        if self.__money == 0:
             self.allin = True
-        
+
         if name is None:
             name = self.name
         logging.info(self.name + " bet " + str(bet))
@@ -37,11 +33,11 @@ class Participant(metaclass=ABCMeta):
         return self.__money
 
     def setMoney(self, money):
-        self.__money  = money
-    
+        self.__money = money
+
     def getCards(self):
         return self.__cards
-    
+
     def setCards(self, cards):
         self.__cards = cards
 
@@ -56,23 +52,26 @@ class Participant(metaclass=ABCMeta):
     def giveCards(self, deck):
         self.__cards = deck.draw(2)
         return [str(each) for each in self.__cards]
-    
+
     def __repr__(self) -> str:
         return self.name
-    
+
     def __str__(self) -> str:
         return self.name
-    
+
     def __dir__(self):
-        return ['name', 'money', 'cards', 'bet', 'points', 'allin', 'minBet', 'maxBet']
+        return [
+            'name', 'money', 'cards', 'bet', 'points', 'allin', 'minBet',
+            'maxBet'
+        ]
 
 
 class Player(Participant):
     def __init__(self, name, money=0, cards=None, bet=None, points=None):
-        super().__init__(name, money, cards, bet,points)
+        super().__init__(name, money, cards, bet, points)
 
     def betting(self, bet):
-        super().betting(bet,self.name)
+        super().betting(bet, self.name)
 
     def clear(self):
         super().clear()
@@ -83,10 +82,10 @@ class Player(Participant):
 
 class Computer(Participant):
     def __init__(self, name, money=0, cards=None, bet=None, points=None):
-        super().__init__(name, money, cards, bet,points)
+        super().__init__(name, money, cards, bet, points)
 
     def betting(self, bet):
-        super().betting(bet,self.name)
+        super().betting(bet, self.name)
 
     def clear(self):
         super().clear()
@@ -102,7 +101,8 @@ class Computer(Participant):
         winning = 0
         start = 17
         step = 1.9
-        numberStat = [0, 0] + np.arange(start, start + step * 13, step).tolist()
+        numberStat = [0, 0] + np.arange(start, start + step * 13,
+                                        step).tolist()
         numbers = [each.number for each in self.getCards()]
 
         if self.getCards()[0].suit == self.getCards()[1].suit:
@@ -250,10 +250,13 @@ class Computer(Participant):
             flushSuit = list(suits.keys())[list(suits.values()).index(5)]
             if flushSuit in add:
                 maxTable = max([
-                    card.number for card in table.cards if card.suit == flushSuit
+                    card.number for card in table.cards
+                    if card.suit == flushSuit
                 ])
-                maxHand = max(
-                    [card.number for card in self.getCards() if card.suit == flushSuit])
+                maxHand = max([
+                    card.number for card in self.getCards()
+                    if card.suit == flushSuit
+                ])
                 if maxTable < maxHand:
                     return "Flush on table and max hand", max([
                         card.number for card in self.getCards()
@@ -356,11 +359,13 @@ class Computer(Participant):
             if player.getMoney() not in [None, 0]:
                 fear /= (player.getMoney() / player.bet)
 
-            action = random.choices(["Bet", "Fold"], weights=[notFear, fear],
+            action = random.choices(["Bet", "Fold"],
+                                    weights=[notFear, fear],
                                     k=1)[0]
 
         else:
-            action = random.choices(["Bet", "Check"], weights=[notFear, fear],
+            action = random.choices(["Bet", "Check"],
+                                    weights=[notFear, fear],
                                     k=1)[0]
 
         if action == 'Bet' and player.bet not in [None, 0]:

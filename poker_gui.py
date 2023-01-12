@@ -384,9 +384,14 @@ def updateBet(window, player):
     window["BET"].Update(range=(player.minBet, player.maxBet))
     window.refresh()
 
+
 def updateText(window, player, computer, table):
 
-    datas = [player.bet, player.getMoney(), computer.bet, computer.getMoney(), table.pot]
+    datas = [
+        player.bet,
+        player.getMoney(), computer.bet,
+        computer.getMoney(), table.pot
+    ]
     datas = [
         "$" + str(each) if type(each) == int else str("None") for each in datas
     ]
@@ -490,6 +495,7 @@ def playCheck():
 
 def pause():
     time.sleep(1.5)
+
 
 def disable(window, element, value):
     window[element].Update(disabled=value)

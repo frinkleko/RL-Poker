@@ -13,15 +13,17 @@ class Card:
 
 
 class Drawcard(Card):
-    def __init__(self,
-                 number,
-                 suit,
-                 image=None,
-                 size=100,
-                 FONTPATH='C:\\Windows\\Fonts\\Arial.ttf',
-                 ):
+    def __init__(
+        self,
+        number,
+        suit,
+        image=None,
+        size=100,
+        FONTPATH='C:\\Windows\\Fonts\\Arial.ttf',
+    ):
         super().__init__(number, suit, image)
-        self.CARDB, CARDD = df.backgroundPNG(int(self.size * 1), int(self.size * 1.3), 'white')
+        self.CARDB, CARDD = df.backgroundPNG(int(self.size * 1),
+                                             int(self.size * 1.3), 'white')
         self.CARDB = df.roundCorners(self.CARDB, int(self.size * 0.05))
         self.Fontpath = FONTPATH
 
