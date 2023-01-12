@@ -5,6 +5,7 @@ from exceptions import *
 import Participant
 import logging
 import os
+import Checker
 
 class Game():
     def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
@@ -124,7 +125,7 @@ class Game():
         self.updateText()
 
     def declareWinner(self):
-        return dealerCheck.checkWinner([self.player, self.computer], self.table)
+        return Checker.checkWinner([self.player, self.computer], self.table)
 
     def rewardWinner(self):
         self.table.payPlayer([self.player, self.computer][self.winnerIndex])

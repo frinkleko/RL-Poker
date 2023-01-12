@@ -15,7 +15,7 @@ class Check:
 
     def check(self):
 
-        a = self.player.cards.copy()
+        a = self.player.getCards().copy()
         if self.table is not None and self.table.cards is not None:
             a += self.table.cards.copy()
         numbers, suits = list(zip(*[[each.number, each.suit] for each in a]))
@@ -264,22 +264,22 @@ def checkWinner(players, table):
 
         indices = [i for i, x in enumerate(first_check.playersScore) if x == first_check.bestHand]
 
-        if bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
+        if first_check.bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
             checker = FlushDrawchecker(players, table)
             res = checker.check(indices)
 
-        elif bestHand == 'STRAIGHT':
+        elif first_check.bestHand == 'STRAIGHT':
             checker = StraightDrawchecker(players, table)
             res = checker.check(indices)
 
-        elif bestHand == 'FULL':
+        elif first_check.bestHand == 'FULL':
             checker = FullDrawchecker(players, table)
             res = checker.check(indices)
         else:
             res = indices
 
         if type(res) == list:
-            res= checkHighestCard(players, res)
+            res = checkHighestCard(players, res)
 
     else:
         res = first_check.playersScore.index(first_check.bestHand)
