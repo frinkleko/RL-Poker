@@ -86,6 +86,34 @@ class Table:
         logging.info('Flop')
         logging.info('Cards on table: {}'.format(self.cards))
 
+    def __getattribute__(self, __name: str):
+        return super().__getattribute__(__name)
+
+    def __setattr__(self, __name: str, __value) -> None:
+        return super().__setattr__(__name, __value)
+
+    def __str__(self):
+        return 'Table: {} {} {} {} {} {}'.format(self.blind, self.cards,
+                                                 self.pot, self.points,
+                                                 self.allin, self.maxBet)
+    
+    def __eq__(self, __o: object) -> bool:
+        return self.blind == __o.blind and self.cards == __o.cards and self.pot == __o.pot and self.points == __o.points and self.allin == __o.allin and self.maxBet == __o.maxBet
+    
+    def __sizeof__(self) -> int:
+        return len(self.cards), len(self.points),len(self.maxBet)
+    
+    def __len__(self) -> int:
+        return len(self.cards), len(self.points),len(self.maxBet)
+    
+    def __getitem__(self, __k: int) -> object:
+        return self.cards, self.points, self.maxBet
+    
+    def __setitem__(self, __k: int, __v: object) -> None:
+        self.cards, self.points, self.maxBet = __v
+
+    def __delitem__(self, __k: int) -> None:
+        del self.cards, self.points, self.maxBet
 
 class Card:
     def __init__(self, number, suit, image=None):
@@ -101,6 +129,9 @@ class Card:
 
     def __repr__(self):
         return '{}{}'.format(self.number, self.suit)
+    
+    def __eq__(self, __o: object) -> bool:
+        return self.number == __o.number and self.suit == __o.suit
 
 
 class Deck:

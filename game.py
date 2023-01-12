@@ -269,3 +269,25 @@ class Game():
 
         self.window.close()
         return None
+    
+    def debug(self):
+        self.player.money = 1000
+        self.computer.money = 1000
+        self.player.bet = 0
+        self.computer.bet = 0
+        self.player.points = None
+        self.computer.points = None
+        self.table.pot = 0
+        self.table.allin = False
+        self.table.cards = []
+        self.player.cards = []
+        self.computer.cards = []
+
+        if os.path.exists('log') == False:
+            os.mkdir('log')
+        logging.basicConfig(handlers=[logging.FileHandler(filename='log/debug_{}_{}.txt'.format(self.player.name,self.computer.name),
+                                                            encoding='utf-8', mode='a+')],
+                                format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
+                                datefmt="%F %A %T",
+                                level=logging.INFO)
+        self.run()
