@@ -17,7 +17,25 @@ python playGame.py
 
 For the Texas game, we need to have classes of environment like table, deck, card. We also need to have classes of player and computer. After all, a checker class/function to decide who is winner is also needed. For GUI recourses, it is also a great idea to manage with class. So the project can be divided and designed as the following parts.
 
-【IMG】 
+```
+│  .gitattributes
+│  .gitignore
+│  Card&draw.py
+│  Checker.py
+│  drawCard.py
+│  Env.py
+│  exceptions.py
+│  files.py
+│  files_content.py
+│  game.py
+│  LICENSE
+│  Participant.py
+│  playGame.py
+│  poker_gui.py
+│  README.md
+│  report.md
+│  requirements.txt
+```
 
 ## Technical requirements
 
@@ -127,7 +145,8 @@ class Img(file):
 ```
 
 ### polymorphism
-Checker.py contains some methods to detect the different results of game matches.
+`Checker.py` contains some methods to detect the different results of game matches. The base Check class and derived various check class have show the polymorphism. All of them have the same name method called check. For that, we can use a function which parameter is any of these  class and call their check function. Same interface, different results.
+
 ```python
 class Check:
     def __init__(self, players, table):
@@ -306,8 +325,6 @@ if event == "START":
 ```
 
 Thus, for the second bound test, startingMoney is 1 and minBet is 1. The program passes this
-
-### error test
 
 ## Summary
 
