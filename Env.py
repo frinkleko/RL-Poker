@@ -129,3 +129,12 @@ class Deck:
             self.deck.remove(each) for each in self.deck
             if card.number == each.number and card.suit == each.suit
         ]
+
+    def __str__(self):
+        return str(self.deck)
+    
+    def __eq__(self, __o: object) -> bool:
+        return self.deck == __o.deck
+    
+    def __sizeof__(self) -> int:
+        return len(self.deck)

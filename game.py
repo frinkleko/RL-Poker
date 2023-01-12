@@ -24,7 +24,9 @@ class Game():
 
         self.winnerIndex = None
 
+        # the turn can be reverse, used for indicates current turn and run the turn function
         self.turn = [lambda: self.comTurn(), lambda: self.playerTurn()]
+
         self.smallBlind = [
             lambda y, : y.betting(self.minBet), lambda y: y.betting(self.minBet * 2)
         ]
@@ -32,7 +34,6 @@ class Game():
 
     def giveCards(self):
         # init deck for this game
-
         deck = Env.Deck()
 
         # 4 cards are drawn from deck by twice
@@ -46,6 +47,7 @@ class Game():
 
     def playerTurn(self):
         logging.info("Player turn")
+        
         self.table.checkMinMaxBet(self.player, [self.computer])
         self.updateSliderAndText()
 

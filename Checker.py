@@ -6,6 +6,14 @@ SUITS = ["♥", "♦", "♣", "♠"]
 
 
 class Check:
+    """
+    This class is used to check the type of hand of the player.
+    It takes two arguments:
+    1. players: list of players
+
+    2. table: table object
+    It returns the type of hand of the player.
+    """
     def __init__(self, players, table):
         self.players = players
         self.table = table
@@ -16,6 +24,12 @@ class Check:
         self.isItDraw = True if self.playersScore.count(self.bestHand) > 1 else False
 
     def check(self, player):
+        """
+        This method is used to check the type of hand of the player.
+        It takes one argument:
+        1. player: player object
+        It returns the type of hand of the player.
+        """
         a = player.getCards().copy()
         if self.table is not None and self.table.cards is not None:
             a += self.table.cards.copy()
@@ -95,8 +109,16 @@ class Check:
                 return name
 
     def return_type(self):
-
         return self.isItDraw
+    
+    def return_bestHand(self):
+        return self.bestHand
+    
+    def return_playersScore(self):
+        return self.playersScore
+    
+    def return_players(self):
+        return self.players
 
 
 class FlushDrawchecker(Check):

@@ -1,8 +1,9 @@
 import random
 import numpy as np
 import logging
+from abc import ABCMeta, abstractmethod
 
-class Participant:
+class Participant(metaclass=ABCMeta):
     def __init__(self,
                  name,
                  money=0,
@@ -55,6 +56,15 @@ class Participant:
     def giveCards(self, deck):
         self.__cards = deck.draw(2)
         return [str(each) for each in self.__cards]
+    
+    def __repr__(self) -> str:
+        return self.name
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    def __dir__(self):
+        return ['name', 'money', 'cards', 'bet', 'points', 'allin', 'minBet', 'maxBet']
 
 
 class Player(Participant):

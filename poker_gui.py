@@ -490,3 +490,6 @@ def playCheck():
 
 def pause():
     time.sleep(1.5)
+
+def disable(window, element, value):
+    window[element].Update(disabled=value)
