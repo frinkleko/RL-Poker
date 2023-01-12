@@ -280,7 +280,7 @@ def checkWinner(players, table):
             res = indices
 
         if type(res) == list:
-            res= checkHighestCard(players, res)
+            res = checkHighestCard(players, res)
 
     else:
         res = first_check.playersScore.index(first_check.bestHand)

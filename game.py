@@ -1,6 +1,5 @@
 import Env
 import poker_gui as gui
-import dealerCheck
 from exceptions import *
 import Participant
 import logging
@@ -216,7 +215,7 @@ class Game():
 
                     self.table.flop(deck)
                     gui.updateFlop(self.window, self.table)
-                    self.player.points = dealerCheck.checkPoints(self.player, self.table)
+                    self.player.points = Checker.Check([self.player], self.table).check(self.player)
                     gui.updatePoints(self.window, self.player.points)
                     self.updateText()
 
