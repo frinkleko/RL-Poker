@@ -8,14 +8,13 @@ class Check:
         self.players = players
         self.table = table
         self.player = None
-        self.playersScore = [self.check() for self.player in self.players]
+        self.playersScore = [self.check(self.player) for self.player in self.players]
         self.playersScore = [self.POINTS.index(each) for each in self.playersScore]
         self.bestHand = min(self.playersScore)
         self.isItDraw = True if self.playersScore.count(self.bestHand) > 1 else False
 
-    def check(self):
-
-        a = self.player.cards.copy()
+    def check(self, player):
+        a = player.getCards().copy()
         if self.table is not None and self.table.cards is not None:
             a += self.table.cards.copy()
         numbers, suits = list(zip(*[[each.number, each.suit] for each in a]))

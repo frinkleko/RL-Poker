@@ -6,6 +6,7 @@ import Participant
 import logging
 import os
 
+
 class Game():
     def __init__(self,playerName, computerName, startingMoney, minBet,mode) -> None:
         self.playerName = playerName
@@ -79,7 +80,7 @@ class Game():
             gui.playBet()
         elif event == 'Check':
             gui.playCheck()
-        
+
         # if one self.player allin, self.table is allin
         self.table.isALLIN([self.player, self.computer])
         gui.pause()
@@ -89,7 +90,7 @@ class Game():
 
         self.table.checkMinMaxBet(self.computer, [self.player])
 
-        # stupid action 
+        # stupid action
         action, bet = self.computer.main(self.table, self.player)
         logging.info("Computer action: " + str(action) + " " + str(bet))
 
@@ -108,7 +109,7 @@ class Game():
         gui.pause()
 
     def bettingTime(self):
-        # loop util betting end 
+        # loop util betting end
         while True:
             for i in range(len(self.turn)):
                 logging.info("Turn: " + str(i))
@@ -162,8 +163,8 @@ class Game():
             os.mkdir('log')
         logging.basicConfig(handlers=[logging.FileHandler(filename='log/{}_{}.txt'.format(self.player.name,self.computer.name),
                                                             encoding='utf-8', mode='a+')],
-                                format="%(asctime)s %(name)s:%(levelname)s:%(message)s", 
-                                datefmt="%F %A %T", 
+                                format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
+                                datefmt="%F %A %T",
                                 level=logging.INFO)
         while self.player.getMoney() != 0 and self.computer.getMoney() != 0:
             logging.info('New Game')
@@ -178,7 +179,7 @@ class Game():
                 gui.giveCards(self.window, self.player)
 
                 # Update GUI points
-                self.player.points = dealerCheck.checkPoints(self.player, self.table)
+                self.player.points = Checker.Check(self.player, self.table).check(self.player)
                 gui.updatePoints(self.window, self.player.points)
 
 
@@ -233,8 +234,8 @@ class Game():
                 self.winnerIndex = self.declareWinner()
 
                 # Winning or losing interactive response
-                self.player.points = dealerCheck.checkPoints(self.player, self.table)
-                self.computer.points = dealerCheck.checkPoints(self.computer, self.table)
+                self.player.points = Checker.Check([self.player], self.table).check(self.player)
+                self.computer.points = Checker.Check([self.computer], self.table).check(self.computer)
                 logging.info('Player points:{}'.format(self.player.points))
                 logging.info('Computer points:{}'.format(self.computer.points))
 
