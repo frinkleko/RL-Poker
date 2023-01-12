@@ -263,15 +263,15 @@ def checkWinner(players, table):
 
         indices = [i for i, x in enumerate(first_check.playersScore) if x == first_check.bestHand]
 
-        if bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
+        if first_check.bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
             checker = FlushDrawchecker(players, table)
             res = checker.check(indices)
 
-        elif bestHand == 'STRAIGHT':
+        elif first_check.bestHand == 'STRAIGHT':
             checker = StraightDrawchecker(players, table)
             res = checker.check(indices)
 
-        elif bestHand == 'FULL':
+        elif first_check.bestHand == 'FULL':
             checker = FullDrawchecker(players, table)
             res = checker.check(indices)
         else:
