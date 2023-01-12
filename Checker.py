@@ -1,15 +1,16 @@
+POINTS = [
+    "ROYALFLUSH", "STRAIGHTFLUSH", "FOUROFAKIND", "FULL", "FLUSH", "STRAIGHT",
+    "TRIPLE", "TWOPAIRS", "ONEPAIR", "HIGHCARD"
+]
+SUITS = ["♥", "♦", "♣", "♠"]
+
 class Check:
     def __init__(self, players, table):
-        self.POINTS = [
-            "ROYALFLUSH", "STRAIGHTFLUSH", "FOUROFAKIND", "FULL", "FLUSH", "STRAIGHT",
-            "TRIPLE", "TWOPAIRS", "ONEPAIR", "HIGHCARD"
-        ]
-        self.SUITS = ["♥", "♦", "♣", "♠"]
         self.players = players
         self.table = table
         self.player = None
         self.playersScore = [self.check(self.player) for self.player in self.players]
-        self.playersScore = [self.POINTS.index(each) for each in self.playersScore]
+        self.playersScore = [POINTS.index(each) for each in self.playersScore]
         self.bestHand = min(self.playersScore)
         self.isItDraw = True if self.playersScore.count(self.bestHand) > 1 else False
 
@@ -87,7 +88,7 @@ class Check:
             ROYALFLUSH, STRAIGHTFLUSH, FOUROFAKIND, FULL, FLUSH, STRAIGHT, TRIPLE,
             TWOPAIRS, ONEPAIR, HIGHCARD
         ]]
-        name = [self.POINTS]
+        name = [POINTS]
         for value, name in list(zip(*value + name)):
             if value == True:
                 return name
