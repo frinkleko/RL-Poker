@@ -127,9 +127,82 @@ class Img(file):
 ```
 
 ### polymorphism
+Checker.py contains some methods to detect the different results of game matches.
+```python
+class Check:
+    def __init__(self, players, table):
+        self.players = players
+        self.table = table
+        self.player = None
+        self.playersScore = [self.check(self.player) for self.player in self.players]
+        self.playersScore = [POINTS.index(each) for each in self.playersScore]
+        self.bestHand = min(self.playersScore)
+        self.isItDraw = True if self.playersScore.count(self.bestHand) > 1 else False
+    
+    def check(self,player):
+        ...
+```
 
+```python
+class FullDrawchecker(Check):
+    def __init__(self, players, table):
+        super().__init__(players, table)
+    
+    def check(self,player):
+        ...
+    
+class StraightDrawchecker(Check):
+    def __init__(self, players, table):
+        super().__init__(players, table)
+    
+    def check(self,player):
+        ...
+    
+class FlushDrawchecker(Check):
+    def __init__(self, players, table):
+        super().__init__(players, table)
+    
+    def check(self,player):
+        ...
+```
 
+```python
+checker = Check()
+checkpoints_result = checker.check()
+result1 = FullDrawchecker(players, table).check()
+result2 = StraightDrawchecker(players, table).check()
+result3 = FlushDrawchecker(players, table).check()
+```
+```python
+def checkWinner(players, table):
+    first_check = Check(players, table)
+    typ = first_check.return_type()
+    if typ:
 
+        indices = [i for i, x in enumerate(first_check.playersScore) if x == first_check.bestHand]
+
+        if first_check.bestHand in ['FLUSH', 'STRAIGHTFLUSH']:
+            checker = FlushDrawchecker(players, table)
+            res = checker.check(indices)
+
+        elif first_check.bestHand == 'STRAIGHT':
+            checker = StraightDrawchecker(players, table)
+            res = checker.check(indices)
+
+        elif first_check.bestHand == 'FULL':
+            checker = FullDrawchecker(players, table)
+            res = checker.check(indices)
+        else:
+            res = indices
+
+        if type(res) == list:
+            res= checkHighestCard(players, res)
+
+    else:
+        res = first_check.playersScore.index(first_check.bestHand)
+
+    return res
+```
 ### UI
 
 This project use `PySimpleGUI` as the GUI module.  All the UI codes is stored in `poker_gui.py`

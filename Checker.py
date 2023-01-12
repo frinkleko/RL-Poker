@@ -4,6 +4,7 @@ POINTS = [
 ]
 SUITS = ["♥", "♦", "♣", "♠"]
 
+
 class Check:
     def __init__(self, players, table):
         self.players = players
