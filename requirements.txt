@@ -1,5 +1,5 @@
-pillow
+Pillow==9.4.0
 numpy
-funPIL
-PySimpleGUI
+funPIL==0.0.8
+PySimpleGUI==4.60.4
 playsound==1.2.2
