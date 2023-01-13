@@ -252,17 +252,19 @@ class Game():
                     result = "Computer Win"
                 else:
                     result = "Player Win"
-                ai_card = self.computer.points
-                player_card = self.player.points
-                label = ai_card+'\t'+player_card+'\t'+result
-                record_dict.setdefualt(label, 0)
-                record_dict[label] += 1
 
                 # Winning or losing interactive response
                 self.player.points = Checker.Check(
                     [self.player], self.table).check(self.player)
                 self.computer.points = Checker.Check(
                     [self.computer], self.table).check(self.computer)
+                
+                ai_card = self.computer.points
+                player_card = self.player.points
+                label = ai_card + '\t' + player_card + '\t' + result
+                record_dict.setdefualt(label, 0)
+                record_dict[label] += 1
+
                 logging.info('Player points:{}'.format(self.player.points))
                 logging.info('Computer points:{}'.format(self.computer.points))
 
