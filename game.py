@@ -5,6 +5,9 @@ import Participant
 import logging
 import os
 import Checker
+import record
+
+record_dict = record.load_dict()
 
 
 class Game():
@@ -31,7 +34,7 @@ class Game():
         self.turn = [lambda: self.comTurn(), lambda: self.playerTurn()]
 
         self.smallBlind = [
-            lambda y, : y.betting(self.minBet),
+            lambda y,: y.betting(self.minBet),
             lambda y: y.betting(self.minBet * 2)
         ]
         self.smallFirst = [self.player, self.computer]
@@ -164,8 +167,7 @@ class Game():
         self.computer.clear()
         gui.clear(self.window)
 
-
-#############################################################################
+    #############################################################################
 
     def run(self):
         if os.path.exists('log') == False:
@@ -174,8 +176,8 @@ class Game():
             handlers=[
                 logging.FileHandler(filename='log/{}_{}.txt'.format(
                     self.player.name, self.computer.name),
-                                    encoding='utf-8',
-                                    mode='a+')
+                    encoding='utf-8',
+                    mode='a+')
             ],
             format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
             datefmt="%F %A %T",
@@ -207,7 +209,7 @@ class Game():
                 gui.pause()
 
                 self.turn.reverse()
-                #self.smallBlind.reverse()
+                # self.smallBlind.reverse()
                 self.smallFirst.reverse()
 
                 # check if allin in self.table
@@ -307,8 +309,8 @@ class Game():
             handlers=[
                 logging.FileHandler(filename='log/debug_{}_{}.txt'.format(
                     self.player.name, self.computer.name),
-                                    encoding='utf-8',
-                                    mode='a+')
+                    encoding='utf-8',
+                    mode='a+')
             ],
             format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
             datefmt="%F %A %T",
