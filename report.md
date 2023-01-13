@@ -17,9 +17,9 @@ python playGame.py
 
 For the Texas game, we need to have classes of environment like table, deck, card. We also need to have classes of player and computer. After all, a checker class/function to decide who is winner is also needed. For GUI recourses, it is also a great idea to manage with class. So the project can be divided and designed as the following parts.
 
+![image-20230113132947250](https://raw.githubusercontent.com/frinkleko/PicgoPabloBED/main/images_for_wechatimage-20230113132947250.png)
+
 ```
-│  .gitattributes
-│  .gitignore
 │  Card&draw.py
 │  Checker.py
 │  drawCard.py
@@ -28,7 +28,6 @@ For the Texas game, we need to have classes of environment like table, deck, car
 │  files.py
 │  files_content.py
 │  game.py
-│  LICENSE
 │  Participant.py
 │  playGame.py
 │  poker_gui.py
@@ -327,7 +326,7 @@ def print_info():
             info = info.replace('\n', '').split('\t')
             print("Round" + str(i) + ":", "Computer: " + info[0], "Player: " + info[1], "Game result: " + info[2],
                   "times: " + info[3])
-```           
+```
 ### Code lines number
 
 
