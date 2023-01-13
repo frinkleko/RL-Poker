@@ -29,9 +29,9 @@ def print_info():
 
 if __name__ == 'main':
     test_dict = {
-        'F\tF\t1': 3,
-        'W\tW\t0': 1
-    }
+            'F\tF\t1': 3,
+            'W\tW\t0': 1
+        }
     write_file(test_dict)
     print_info()
     dict = load_dict()

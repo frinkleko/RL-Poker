@@ -7,8 +7,6 @@ import os
 import Checker
 import record
 
-record_dict = record.load_dict()
-
 
 class Game():
     def __init__(self, playerName, computerName, startingMoney, minBet,
@@ -170,6 +168,7 @@ class Game():
     #############################################################################
 
     def run(self):
+        record_dict = record.load_dict()
         if os.path.exists('log') == False:
             os.mkdir('log')
         logging.basicConfig(
@@ -249,6 +248,16 @@ class Game():
                 # Checking winner
                 self.winnerIndex = self.declareWinner()
 
+                if self.winnerIndex == 1:
+                    result = "Computer Win"
+                else:
+                    result = "Player Win"
+                ai_card = self.computer.points
+                player_card = self.player.points
+                label = ai_card+'\t'+player_card+'\t'+result
+                record_dict.setdefualt(label, 0)
+                record_dict[label] += 1
+
                 # Winning or losing interactive response
                 self.player.points = Checker.Check(
                     [self.player], self.table).check(self.player)
@@ -287,6 +296,8 @@ class Game():
                 self.foldFunction()
                 gui.playHand(self.winnerIndex)
 
+        record.write_file(record_dict)
+        record.print_info()
         self.window.close()
         return None
 
